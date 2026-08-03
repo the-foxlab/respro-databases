@@ -701,7 +701,7 @@ def main() -> None:
 
     metadata = {
         "maintainers": ["Oscar Charles"],
-        "contact": "oscar.charles.18@ucl.ac.uk",
+        "contact": "Oscar.Charles@syngenta.com",
         "publication_pmid": "39192205",
         "website": "https://github.com/ojcharles/herpesdrg-db",
         "description": "Comprehensive resource for human herpesvirus antiviral drug resistance genotyping.",
