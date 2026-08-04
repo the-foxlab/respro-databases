@@ -161,8 +161,7 @@ Before merging:
 
 ## Canonical formatting reference
 
-Primary source of truth for TSV rules semantics:
-
-- `formatting_instructions/README.md`
+Primary source of truth for TSV rules semantics and the metadata schema is the `docs/` folder in
+the [ResistanceProfiler](https://github.com/the-foxlab/ResistanceProfiler) repository.
 
 Do not rely on undocumented assumptions from external databases.

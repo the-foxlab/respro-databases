@@ -1,58 +1,68 @@
-# ResPro Database Conversion Pattern
+# ResistanceProfiler supported databases
 
-This repository is intended as a general home for ResPro-compatible, auto-updated antiviral resistance databases.
+This repository curates and auto-updates antiviral resistance databases in the format expected by
+[ResistanceProfiler](https://github.com/the-foxlab/ResistanceProfiler) (ResPro).
 
-## Global metadata manifest
+Each upstream source (e.g. HIVdb, HerpesDRG) gets its own folder with a converter script that
+fetches the upstream data and transforms it into ResPro's TSV schema, plus a GitHub Actions
+workflow that keeps the output in sync whenever the upstream source changes.
 
-To simplify unauthenticated clients, this repository publishes a single discovery file at `databases/manifest.json`.
-The manifest is generated from all `databases/*/output/metadata.json` files and includes:
+**Scope**: this repo only fetches, converts, validates, and publishes database artifacts. It does
+not implement ResPro's resistance-profiling logic — that lives in the
+[ResistanceProfiler](https://github.com/the-foxlab/ResistanceProfiler) repository, whose `docs/`
+folder is the authoritative reference for the TSV schema, metadata schema, and interpretation
+algorithms.
 
-- source name
-- relative path to `metadata.json`
-- relative path to `rules.tsv`
-- relative path to `formula-rules.tsv` (empty when not present)
-- embedded metadata content
+## What this repo does
 
-For GitHub-based consumers, fetch it via the raw URL:
+- Fetches curated upstream source data (Zenodo, GitHub, release assets, or similar).
+- Converts source data into ResPro-compatible TSV artifacts.
+- Tracks source rows that couldn't be migrated, with explicit reasons.
+- Auto-updates outputs via GitHub Actions, opening a PR only when a new upstream version is
+  detected.
 
-`https://raw.githubusercontent.com/jonas-fuchs/respro-db/main/databases/manifest.json`
-
-Then follow `metadata_path` and `rules_path` entries directly for each source.
-
-## Repository purpose
-
-- fetch curated upstream source data (Zenodo, Github, release assets, or similar)
-- transform source data into ResPro-compatible TSV artifacts
-- track non-migrated source rows with explicit reasons
-- auto-update outputs via GitHub Actions and open update PRs only when a new upstream version is detected
-
-## Required structure per conversion
-
-Each source database needs to use its own folder under databases:
+## Repository layout
 
 ```text
-databases/manifest.json
+databases/
+  manifest.json                 # generated discovery file, see below
 
-databases/<source_name>/
-  scripts/
-    convert.py
-    requirements.txt
-  output/
-    rules.tsv
-    formula-rules.tsv        # only when combination rules are present
-    metadata.json
-    non-migrated-rules.txt
+  <source_name>/
+    scripts/
+      convert.py
+      requirements.txt
+    output/
+      rules.tsv
+      formula-rules.tsv         # only when combination rules apply
+      metadata.json
+      non-migrated-rules.txt
+
+.github/workflows/
+  <source_name>-autobump.yml    # one workflow per source
 ```
 
-And one workflow per source in .github/workflows:
+## Discovery manifest
+
+Unauthenticated clients can discover every available database from a single generated file:
+
+`databases/manifest.json`
+
+It's built from all `databases/*/output/metadata.json` files, and each entry contains the source
+name, relative paths to `metadata.json`, `rules.tsv`, and `formula-rules.tsv` (empty when absent),
+and the embedded metadata content.
+
+GitHub-based consumers can fetch it directly via the raw URL:
 
 ```text
-.github/workflows/<source_name>-autobump.yml
+https://raw.githubusercontent.com/jonas-fuchs/respro-db/main/databases/manifest.json
 ```
 
-## GitHub Workflow Pattern
+Then follow the `metadata_path` and `rules_path` entries for each source.
 
-All autobump workflows follow a consistent logical structure, with identical step names and flow. Implementation details vary based on the source type (Zenodo API, GitHub API, release assets, etc.), but the workflow steps remain standardized:
+## Autobump workflow pattern
+
+Every source has its own workflow, but all follow the same steps. Implementation details vary by
+source type (Zenodo API, GitHub API, release assets, etc.); the step names and flow stay the same:
 
 ```mermaid
 graph TD
@@ -68,26 +78,16 @@ graph TD
     I --> J
 ```
 
-### Unified Workflow Step Names and Responsibilities
-
-1. **Checkout**: Clone repository code
-2. **Set up Python**: Install Python 3.12
-3. **Resolve latest upstream source**: Fetch upstream source metadata
-   - For Zenodo: Query API for latest record ID and updated timestamp
-   - For GitHub: Query GitHub API for latest commit date of the source file
-   - Output: `source_url`, `source_commit_date` (or equivalent timestamp), and version identifier (record ID or commit SHA)
-4. **Compare with current tracked source**: Check if update is needed
-   - Compare upstream timestamp/ID with `maintainer_update` field in current `metadata.json`
-   - Output: `should_update` flag (true/false) and `current_source_date`
-5. **Install converter dependencies**: Run `pip install -r databases/<source>/scripts/requirements.txt`
-6. **Run converter**: Execute conversion script with `--source-url` and `--output-dir` arguments
-   - Converter fetches the upstream source timestamp independently (from API or response headers)
-   - Converter validates and produces TSV outputs
-   - Converter sets `maintainer_update` in metadata.json to the fetched source timestamp
-7. **No update detected**: Informational step shown when no update is needed
-8. **Create pull request**: Open PR with source metadata in body and output files in `add-paths`
-
-### Pull Request Format
+| Step | Responsibility |
+| --- | --- |
+| **Checkout** | Clone repository code. |
+| **Set up Python** | Install Python 3.12. |
+| **Resolve latest upstream source** | Fetch upstream metadata: for Zenodo, the latest record ID and updated timestamp; for GitHub, the latest commit date of the source file. Produces `source_url`, a timestamp, and a version identifier (record ID or commit SHA). |
+| **Compare with current tracked source** | Compare the upstream timestamp/ID against `maintainer_update` in the current `metadata.json`. Produces a `should_update` flag and `current_source_date`. |
+| **Install converter dependencies** | `pip install -r databases/<source>/scripts/requirements.txt`. |
+| **Run converter** | Run `convert.py` with `--source-url` and `--output-dir`. The converter fetches the upstream timestamp itself (from the API or response headers), validates the data, produces the TSV outputs, and sets `maintainer_update` in `metadata.json`. |
+| **No update detected** | Informational step, shown only when no update is needed. |
+| **Create pull request** | Open a PR with source metadata in the body and the regenerated output files in `add-paths`. |
 
 All autobump PRs follow this format:
 
@@ -111,18 +111,14 @@ add-paths:
   - databases/<source>/output/non-migrated-rules.txt
 ```
 
-## Converter Script Pattern
+## Converter script pattern
 
-All converter scripts accept these standard arguments and produce consistent console output:
+Every `convert.py` accepts two arguments and produces consistent console output:
 
-### Required Arguments
+- `--source-url` — the upstream data source URL (hardcoded or passed from the workflow)
+- `--output-dir` — the directory where TSV artifacts and `metadata.json` are written
 
-- `--source-url`: Upstream data source URL (can be hardcoded or passed from workflow)
-- `--output-dir`: Directory where TSV artifacts and metadata.json should be written
-
-### Console Output Format
-
-All converter output must go to `stderr` (not `stdout`). Use an `eprint()` helper for consistent routing:
+**Console output** must go entirely to `stderr` (never `stdout`). Use an `eprint()` helper:
 
 ```python
 def eprint(msg: str) -> None:
@@ -131,7 +127,7 @@ def eprint(msg: str) -> None:
 
 Converters must follow this standardized output sequence:
 
-```
+```text
 Source date: <YYYY-MM-DD>                     # as early as possible (before or after Downloading, depending on source)
 Downloading <url> …
 Parsed <N> source rows                          # optional – omit for non-tabular sources
@@ -142,47 +138,35 @@ Written <non_migrated_path> (<N> aggregated entries).
 Done.
 ```
 
-**Rules:**
-
 - **All output to `stderr`** — never write progress messages to `stdout`.
-- **`Source date:`** — the date used for `maintainer_update` in metadata.json (fetched from upstream API, `--source-date` argument, or fallback). Print this as early as the date is known — ideally before `Downloading`, but after is acceptable when the date is derived from the downloaded content.
-- **`Downloading <url> …`** — emitted when the upstream source fetch begins (use `…` ellipsis, not `...`).
-- **`Written` lines** — emit one line per output file, in the order shown. The `(N rows)` / `(N aggregated entries)` count includes only data rows (not the header). Omit the formula-rules line entirely when there are no formula rows (and delete the file if it exists).
+- **`Source date:`** — the date used for `maintainer_update` in `metadata.json` (fetched from the upstream API, a `--source-date` argument, or a fallback). Print it as early as it's known — ideally before `Downloading`, but after is acceptable when derived from downloaded content.
+- **`Downloading <url> …`** — emitted when the upstream fetch begins (use the `…` ellipsis character, not `...`).
+- **`Written` lines** — one line per output file, in the order shown. The row/entry count excludes the header row. Omit the formula-rules line entirely when there are no formula rows (and delete the file if it exists).
 - **`Done.`** — final line confirming successful completion.
-- **Diagnostic messages** — `WARNING:` and `SKIPPED:` / `DROPPED:` lines are allowed at any point before `Done.` but must also go to `stderr`. These are for per-row conversion notes and validation warnings.
-- **Auxiliary fetch messages** — converters that download additional resources (e.g., drug maps, gene data) may emit extra `Fetching <url> …` lines between `Downloading` and `Written`.
+- **Diagnostics** — `WARNING:` and `SKIPPED:` / `DROPPED:` lines may appear anywhere before `Done.`, always on `stderr`.
+- **Auxiliary fetches** — converters that download extra resources (drug maps, gene data, …) may emit extra `Fetching <url> …` lines between `Downloading` and `Written`.
 
-### Converter Responsibilities
+### Converter responsibilities
 
-1. Download/fetch source data from `--source-url`
-2. Parse and validate input schema
-3. Transform to atomic rules (one mutation per row) and optional formula rules (grouped combinations)
-4. Deduplicate by `(gene, reference_id, position, mutation, antiviral, publication)` tuple
-5. Sort deterministically for reproducible output
-6. Generate `rules.tsv` with required columns: `gene`, `reference_identifier`, `position`, `reference`, `mutation`, `antiviral`
-7. Generate optional `formula-rules.tsv` (only if `group_id` + formula cases exist)
-8. Generate `metadata.json` with fixed schema (see `formatting_instructions/README`)
-   - Fetch source timestamp from upstream API; fall back to today's date only if API is unavailable
-   - Compute `tsv_checksum` as `sha256:<hex>` of rules.tsv content
-9. Generate `non-migrated-rules.txt` with audit trail of rows that couldn't be converted
-10. Validate all required columns and fail fast on schema mismatches
-11. Print standardized progress messages to stderr
+1. Download/fetch source data from `--source-url`.
+2. Parse and validate the input schema.
+3. Transform rows into atomic rules (one mutation per row) and, when applicable, formula rules (grouped combinations).
+4. Deduplicate by `(gene, reference_id, position, mutation, antiviral, publication)`.
+5. Sort deterministically for reproducible output.
+6. Write `rules.tsv` with the required columns: `gene`, `reference_identifier`, `position`, `reference`, `mutation`, `antiviral`.
+7. Write `formula-rules.tsv` only if `group_id` + formula cases exist.
+8. Write `metadata.json` following the schema documented in the [ResistanceProfiler](https://github.com/the-foxlab/ResistanceProfiler) `docs/` folder. Fetch the source timestamp from the upstream API (fall back to today's date only if unavailable), and compute `tsv_checksum` as `sha256:<hex>` of the `rules.tsv` content.
+9. Write `non-migrated-rules.txt` as an audit trail of rows that couldn't be converted.
+10. Validate all required columns and fail fast on schema mismatches.
+11. Print the standardized progress messages to `stderr`.
 
-### Example: Adding a New Database
+## Adding a new database
 
-To add a new upstream database:
+1. Create `databases/<source_name>/scripts/convert.py`, following the converter pattern above (accepting `--source-url` / `--output-dir`, fetching the upstream timestamp for `maintainer_update`).
+2. Create `databases/<source_name>/scripts/requirements.txt` with its dependencies.
+3. Create `.github/workflows/<source_name>-autobump.yml`, reusing the workflow steps above and adapting only "Resolve latest upstream source" for the source type.
+4. Add the source's metadata to the converter's config (maintainers, publication PMID, license, etc.).
 
-1. Create `databases/<source_name>/scripts/convert.py`
-   - Accept `--source-url` and `--output-dir` arguments
-   - Fetch the source timestamp from the upstream API and set it as `maintainer_update`
-   - Follow the converter output format and responsibilities above
-2. Create `databases/<source_name>/scripts/requirements.txt` with dependencies
-3. Create `.github/workflows/<source_name>-autobump.yml`
-   - Use the workflow step names and structure shown above
-   - Adapt the "Resolve latest upstream source" step for your source type
-   - All other steps remain identical
-4. Add your source metadata to the converter's hardcoded config (maintainers, publication PMID, license, etc.)
+## Requesting a new database
 
-## You would like support for your database?
-
-Either open a PR here and add the required files or open an issue which database you would like to have supported. We will do our best to make it possible. Importantly, we will need some kind of API to that database to be able to check for updates in regular intervals and autoupdate the respective files in the repo.
+Open a PR here with the required files, or open an issue naming the database you'd like supported. We need some kind of API for that database so we can check for updates at regular intervals and auto-update the corresponding files in this repo — please mention what's available upstream.
