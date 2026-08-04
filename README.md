@@ -7,12 +7,6 @@ Each upstream source (e.g. HIVdb, HerpesDRG) gets its own folder with a converte
 fetches the upstream data and transforms it into ResPro's TSV schema, plus a GitHub Actions
 workflow that keeps the output in sync whenever the upstream source changes.
 
-**Scope**: this repo only fetches, converts, validates, and publishes database artifacts. It does
-not implement ResPro's resistance-profiling logic — that lives in the
-[ResistanceProfiler](https://github.com/the-foxlab/ResistanceProfiler) repository, whose `docs/`
-folder is the authoritative reference for the TSV schema, metadata schema, and interpretation
-algorithms.
-
 ## What this repo does
 
 - Fetches curated upstream source data (Zenodo, GitHub, release assets, or similar).
@@ -51,13 +45,11 @@ It's built from all `databases/*/output/metadata.json` files, and each entry con
 name, relative paths to `metadata.json`, `rules.tsv`, and `formula-rules.tsv` (empty when absent),
 and the embedded metadata content.
 
-GitHub-based consumers can fetch it directly via the raw URL:
+This is the primariy file that is used to display supported databases via the ResPro command:
 
-```text
-https://raw.githubusercontent.com/jonas-fuchs/respro-db/main/databases/manifest.json
+```bash
+respro databases --list
 ```
-
-Then follow the `metadata_path` and `rules_path` entries for each source.
 
 ## Autobump workflow pattern
 
