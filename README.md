@@ -143,9 +143,9 @@ Done.
 1. Download/fetch source data from `--source-url`.
 2. Parse and validate the input schema.
 3. Transform rows into atomic rules (one mutation per row) and, when applicable, formula rules (grouped combinations).
-4. Deduplicate by `(gene, reference_id, position, mutation, antiviral, publication)`.
+4. Deduplicate by `(feature, reference_id, position, mutation, antiviral, publication)`.
 5. Sort deterministically for reproducible output.
-6. Write `rules.tsv` with the required columns: `gene`, `reference_identifier`, `position`, `reference`, `mutation`, `antiviral`.
+6. Write `rules.tsv` with the required columns: `feature`, `reference_identifier`, `position`, `reference`, `mutation`, `antiviral`.
 7. Write `formula-rules.tsv` only if `group_id` + formula cases exist.
 8. Write `metadata.json` following the schema documented in the [ResistanceProfiler](https://github.com/the-foxlab/ResistanceProfiler) `docs/` folder. Fetch the source timestamp from the upstream API (fall back to today's date only if unavailable), and compute `tsv_checksum` as `sha256:<hex>` of the `rules.tsv` content.
 9. Write `non-migrated-rules.txt` as an audit trail of rows that couldn't be converted.

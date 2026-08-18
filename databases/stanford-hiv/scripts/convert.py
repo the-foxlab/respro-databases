@@ -2,7 +2,7 @@
 """
 Convert Stanford HIVDB ASI XML into ResPro-compatible TSV artifacts.
 
-Outputs written to databases/standford-hiv/output/:
+Outputs written to databases/stanford-hiv/output/:
   rules.tsv           – one row per atomic mutation or formula member
   formula-rules.tsv   – boolean combination rules (emitted only when needed)
   metadata.json       – provenance, version, and checksum
@@ -110,7 +110,7 @@ FORMULA_COLUMNS = [
     "ic50", "publication", "source", "comment",
 ]
 
-NON_MIGRATED_COLUMNS = ["reason", "drug", "gene", "score", "raw_rule", "details"]
+NON_MIGRATED_COLUMNS = ["reason", "drug", "feature", "score", "raw_rule", "details"]
 
 # ---------------------------------------------------------------------------
 # Shared utilities
@@ -1036,10 +1036,10 @@ def _try_combined_or(
 
 def _add_non_migrated(
     ctx: _Ctx, reason: str, *,
-    drug: str, gene: str, score: str, raw_rule: str, details: str = "",
+    drug: str, feature: str, score: str, raw_rule: str, details: str = "",
 ) -> None:
     ctx.non_migrated.append({
-        "reason": reason, "drug": drug, "gene": gene,
+        "reason": reason, "drug": drug, "feature": feature,
         "score": score, "raw_rule": raw_rule, "details": details,
     })
 

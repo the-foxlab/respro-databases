@@ -55,9 +55,11 @@ def build_manifest(repo_root: Path) -> dict[str, Any]:
     entries: list[dict[str, Any]] = []
 
     for metadata_path in sorted(databases_dir.glob("*/output/metadata.json")):
-        source_name = metadata_path.parent.parent.name
+        source_dir = metadata_path.parent.parent
+        source_name = source_dir.name
         rules_path = metadata_path.parent / "rules.tsv"
         formula_rules_path = metadata_path.parent / "formula-rules.tsv"
+        example_fasta_path = source_dir / "example" / "example.fasta"
 
         if not rules_path.exists():
             raise FileNotFoundError(f"Missing rules.tsv for {source_name}: {rules_path}")
@@ -71,6 +73,11 @@ def build_manifest(repo_root: Path) -> dict[str, Any]:
             "formula_rules_path": (
                 str(formula_rules_path.relative_to(repo_root))
                 if formula_rules_path.exists()
+                else ""
+            ),
+            "example_fasta_path": (
+                str(example_fasta_path.relative_to(repo_root))
+                if example_fasta_path.exists()
                 else ""
             ),
             "metadata": metadata,

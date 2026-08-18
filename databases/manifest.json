@@ -6,6 +6,7 @@
       "metadata_path": "databases/herpesdrg/output/metadata.json",
       "rules_path": "databases/herpesdrg/output/rules.tsv",
       "formula_rules_path": "databases/herpesdrg/output/formula-rules.tsv",
+      "example_fasta_path": "databases/herpesdrg/example/example.fasta",
       "metadata": {
         "maintainers": [
           "Oscar Charles"
@@ -24,6 +25,7 @@
       "metadata_path": "databases/hsv_daehne_jaki/output/metadata.json",
       "rules_path": "databases/hsv_daehne_jaki/output/rules.tsv",
       "formula_rules_path": "databases/hsv_daehne_jaki/output/formula-rules.tsv",
+      "example_fasta_path": "databases/hsv_daehne_jaki/example/example.fasta",
       "metadata": {
         "maintainers": [
           "Daehne, Theo",
@@ -40,10 +42,11 @@
       }
     },
     {
-      "source_name": "standford-hiv",
-      "metadata_path": "databases/standford-hiv/output/metadata.json",
-      "rules_path": "databases/standford-hiv/output/rules.tsv",
-      "formula_rules_path": "databases/standford-hiv/output/formula-rules.tsv",
+      "source_name": "stanford-hiv",
+      "metadata_path": "databases/stanford-hiv/output/metadata.json",
+      "rules_path": "databases/stanford-hiv/output/rules.tsv",
+      "formula_rules_path": "databases/stanford-hiv/output/formula-rules.tsv",
+      "example_fasta_path": "databases/stanford-hiv/example/example.fasta",
       "metadata": {
         "maintainers": [
           "Stanford HIVDB Team"
