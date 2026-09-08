@@ -744,12 +744,16 @@ def main() -> None:
             {
                 "name": "drug_interpretation",
                 "method": "by_phenotype",
-                "thresholds": {"resistant": 1, "intermediate": 1},
             },
             {
                 "name": "drug_interpretation",
                 "method": "by_fold_ic50",
-                "thresholds": {"intermediate": 5.0, "resistant": 15.0},
+                "thresholds": {
+                    "susceptible": 0.0,
+                    "low-level resistance": 2.0,
+                    "intermediate": 5.0,
+                    "high-level resistance": 15.0,
+                },
             },
             {
                 "name": "drug_alias",

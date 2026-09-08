@@ -1,4 +1,4 @@
 # Non-migrated Stanford HIVDB rules
-# Columns: reason	drug	gene	score	raw_rule	details
+# Columns: reason	drug	feature	score	raw_rule	details
 
-reason	drug	gene	score	raw_rule	details
+reason	drug	feature	score	raw_rule	details

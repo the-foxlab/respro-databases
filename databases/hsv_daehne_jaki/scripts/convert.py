@@ -876,7 +876,6 @@ def main():
             {
                 "name": "drug_interpretation",
                 "method": "by_phenotype",
-                "thresholds": {"resistant": 1, "intermediate": 1},
             },
             {
                 "name": "drug_alias",
