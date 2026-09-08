@@ -1,0 +1,97 @@
+name: PR database build check
+
+on:
+  pull_request:
+    paths:
+      - "databases/**"
+      - "scripts/respro_build_qc.py"
+      - ".github/actions/respro-build-qc/**"
+      - ".github/workflows/pr-build-check.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  detect-changed-databases:
+    runs-on: ubuntu-latest
+    outputs:
+      herpesdrg: ${{ steps.filter.outputs.herpesdrg }}
+      hsv_daehne_jaki: ${{ steps.filter.outputs.hsv_daehne_jaki }}
+      stanford-hiv: ${{ steps.filter.outputs.stanford-hiv }}
+      any: ${{ steps.filter.outputs.any }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect changed databases
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          # `any` covers shared infrastructure (QC script, composite action,
+          # this workflow) so a change there triggers a full build check.
+          filters: |
+            herpesdrg:
+              - 'databases/herpesdrg/**'
+            hsv_daehne_jaki:
+              - 'databases/hsv_daehne_jaki/**'
+            stanford-hiv:
+              - 'databases/stanford-hiv/**'
+            any:
+              - 'databases/herpesdrg/**'
+              - 'databases/hsv_daehne_jaki/**'
+              - 'databases/stanford-hiv/**'
+              - 'scripts/respro_build_qc.py'
+              - '.github/actions/respro-build-qc/**'
+              - '.github/workflows/pr-build-check.yml'
+
+  build-check:
+    needs: detect-changed-databases
+    if: needs.detect-changed-databases.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # One job per database; the `if` guard on each step skips databases
+        # that were not touched by the PR.
+        database:
+          - name: herpesdrg
+            dir: databases/herpesdrg/output
+            changed: ${{ needs.detect-changed-databases.outputs.herpesdrg }}
+          - name: hsv_daehne_jaki
+            dir: databases/hsv_daehne_jaki/output
+            changed: ${{ needs.detect-changed-databases.outputs.hsv_daehne_jaki }}
+          - name: stanford-hiv
+            dir: databases/stanford-hiv/output
+            changed: ${{ needs.detect-changed-databases.outputs.stanford-hiv }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run respro build QC
+        if: matrix.database.changed == 'true'
+        id: qc
+        uses: ./.github/actions/respro-build-qc
+        with:
+          source-name: ${{ matrix.database.name }}
+          output-dir: ${{ matrix.database.dir }}
+          work-dir: /tmp/respro_qc_${{ matrix.database.name }}
+
+      - name: Comment QC summary on PR
+        if: matrix.database.changed == 'true' && always()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### respro build QC — `${{ matrix.database.name }}`
+
+            ${{ steps.qc.outputs.summary }}
+
+            _Failed builds must be fixed before merge._
+
+      - name: Fail on respro build error
+        if: matrix.database.changed == 'true' && steps.qc.outputs.qc_failed == 'true'
+        run: |
+          echo "respro build QC failed for ${{ matrix.database.name }}; see the PR comment and the build logs."
+          exit 1

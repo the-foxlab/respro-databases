@@ -39,7 +39,7 @@ def load_metadata(metadata_path: Path) -> dict[str, Any]:
         metadata = json.load(fh)
 
     if not isinstance(metadata, dict):
-        raise ValueError(f"Metadata must be a JSON object: {metadata_path}")
+        raise ValueError(f"Metadata must be a JSON object: {metadata_path}")  # noqa: TRY004
 
     keys = set(metadata.keys())
     required = set(REQUIRED_METADATA_KEYS)
