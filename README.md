@@ -22,6 +22,8 @@ databases/
   manifest.json                 # generated discovery file, see below
 
   <source_name>/
+    example/
+      example.fasta
     scripts/
       convert.py
       requirements.txt
