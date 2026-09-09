@@ -57,8 +57,11 @@
       "name": "drug_interpretation",
       "method": "by_score",
       "thresholds": {
-        "intermediate": 15,
-        "resistant": 60
+        "susceptible": 0,
+        "potential low-level resistance": 10,
+        "low-level resistance": 15,
+        "intermediate resistance": 30,
+        "high-level resistance": 60
       }
     },
     {

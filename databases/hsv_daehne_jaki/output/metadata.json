@@ -34,11 +34,7 @@
     },
     {
       "name": "drug_interpretation",
-      "method": "by_phenotype",
-      "thresholds": {
-        "resistant": 1,
-        "intermediate": 1
-      }
+      "method": "by_phenotype"
     },
     {
       "name": "drug_alias",

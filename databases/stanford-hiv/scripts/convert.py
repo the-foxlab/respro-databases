@@ -279,15 +279,25 @@ def extract_score_thresholds(root: ET.Element) -> dict[str, int]:
       (-INF TO 9 => 1,  10 TO 14 => 2,  15 TO 29 => 3,  30 TO 59 => 4,  60 TO INF => 5)
     LEVEL_DEFINITION maps ORDER integers to SIR codes (S/I/R).
 
-    Returns a dict with the minimum score for each non-S level name used in
-    the ResPro drug_interpretation block, e.g. {"intermediate": 15, "resistant": 60}.
-    The threshold is the lowest finite lower-bound score whose level order maps to R or I.
+    Returns a dict mapping each rank-vocabulary label to the lowest finite
+    lower-bound score for its GLOBALRANGE bucket. The rank-1 ``susceptible``
+    label is always present (value 0) as the baseline fallback for scores
+    below all higher-rank breakpoints, mirroring the ResPro ``by_score``
+    contract that requires at least one rank-1 label.
+
+    Stanford's five ORDERs map to the ResPro rank vocabulary as:
+      ORDER 1 (S,  -INF..9)  -> susceptible                  (rank 1, value 0)
+      ORDER 2 (I?, 10..14)   -> potential low-level resistance (rank 2)
+      ORDER 3 (I?, 15..29)   -> low-level resistance          (rank 3)
+      ORDER 4 (I,  30..59)   -> intermediate resistance       (rank 4)
+      ORDER 5 (R,  60..INF)  -> high-level resistance         (rank 5)
     """
     defs = root.find("DEFINITIONS")
     if defs is None:
         raise ValueError("XML missing DEFINITIONS element")
 
-    # Build order -> SIR mapping from LEVEL_DEFINITION elements.
+    # Build order -> SIR mapping from LEVEL_DEFINITION elements (kept for
+    # validation that the XML structure is as expected).
     order_to_sir: dict[int, str] = {}
     for ld in defs.findall("LEVEL_DEFINITION"):
         order_text = text_of(ld, "ORDER")
@@ -309,24 +319,40 @@ def extract_score_thresholds(root: ET.Element) -> dict[str, int]:
         re.IGNORECASE,
     )
 
-    # Collect lowest finite lower-bound for each SIR category.
-    sir_min: dict[str, int] = {}
+    # Map each ORDER to its rank-vocabulary label. Stanford uses five ordered
+    # levels (1..5); we project them onto the ResPro rank vocabulary so the
+    # report colours and strongest-wins aggregation use the full multi-tier
+    # scale rather than collapsing to S/I/R.
+    order_to_label: dict[int, str] = {
+        1: "susceptible",
+        2: "potential low-level resistance",
+        3: "low-level resistance",
+        4: "intermediate resistance",
+        5: "high-level resistance",
+    }
+
+    # Collect the lowest finite lower-bound score per rank label. The
+    # susceptible baseline is always 0 so scores below the first non-S
+    # breakpoint resolve to rank 1.
+    label_min: dict[str, int] = {"susceptible": 0}
     for m in bucket_re.finditer(range_text):
         lb_raw, _, order_raw = m.group(1), m.group(2), m.group(3)
         order = int(order_raw)
-        sir = order_to_sir.get(order)
-        if sir is None or sir == "S":
+        label = order_to_label.get(order)
+        if label is None:
             continue
-        lb = None if lb_raw.upper() == "-INF" else int(lb_raw)
-        if lb is not None:
-            sir_key = "resistant" if sir == "R" else "intermediate"
-            if sir_key not in sir_min or lb < sir_min[sir_key]:
-                sir_min[sir_key] = lb
+        if lb_raw.upper() == "-INF":
+            # -INF lower bound: the susceptible baseline bucket.
+            label_min[label] = 0
+        else:
+            lb = int(lb_raw)
+            if label not in label_min or lb < label_min[label]:
+                label_min[label] = lb
 
-    if not sir_min:
+    if not any(k != "susceptible" for k in label_min):
         raise ValueError("Could not derive any non-susceptible thresholds from GLOBALRANGE")
 
-    return sir_min
+    return label_min
 
 
 def build_drug_to_gene(root: ET.Element) -> dict[str, str]:

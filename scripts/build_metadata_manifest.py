@@ -25,13 +25,21 @@ EXCLUDED_METADATA_KEYS = {
     "interpretation_algorithms",
 }
 
+# Minimum ResPro version required to build the databases listed in this
+# manifest. Expressed as a PEP 440 version specifier string (without the
+# leading package name) so ResPro clients can compare it against their own
+# installed version and prompt the user to upgrade when too old. Bump this
+# whenever a change to the TSV contract or metadata schema relies on
+# behaviour only present in a newer ResPro release.
+RESPRO_VERSION_REQUIREMENT = ">=0.1.3"
+
 
 def load_metadata(metadata_path: Path) -> dict[str, Any]:
     with metadata_path.open("r", encoding="utf-8") as fh:
         metadata = json.load(fh)
 
     if not isinstance(metadata, dict):
-        raise ValueError(f"Metadata must be a JSON object: {metadata_path}")
+        raise ValueError(f"Metadata must be a JSON object: {metadata_path}")  # noqa: TRY004
 
     keys = set(metadata.keys())
     required = set(REQUIRED_METADATA_KEYS)
@@ -85,7 +93,7 @@ def build_manifest(repo_root: Path) -> dict[str, Any]:
         entries.append(entry)
 
     return {
-        "manifest_version": 1,
+        "respro_version": RESPRO_VERSION_REQUIREMENT,
         "databases": entries,
     }
 

@@ -22,6 +22,8 @@ databases/
   manifest.json                 # generated discovery file, see below
 
   <source_name>/
+    example/
+      example.fasta
     scripts/
       convert.py
       requirements.txt
@@ -44,6 +46,13 @@ Unauthenticated clients can discover every available database from a single gene
 It's built from all `databases/*/output/metadata.json` files, and each entry contains the source
 name, relative paths to `metadata.json`, `rules.tsv`, and `formula-rules.tsv` (empty when absent),
 and the embedded metadata content.
+
+The manifest's top-level `respro_version` field is a PEP 440 version specifier (e.g. `">=0.1.3"`)
+stating the minimum ResPro release required to build the listed databases. ResPro clients compare
+their own installed version against this specifier and prompt the user to upgrade when too old,
+so breaking changes to the TSV contract or metadata schema can be gated on a known ResPro release.
+Bump this value in `scripts/build_metadata_manifest.py` (`RESPRO_VERSION_REQUIREMENT`) whenever a
+newer ResPro feature becomes a hard requirement.
 
 This is the primariy file that is used to display supported databases via the ResPro command:
 

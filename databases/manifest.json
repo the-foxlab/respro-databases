@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "respro_version": ">=0.1.3",
   "databases": [
     {
       "source_name": "herpesdrg",
