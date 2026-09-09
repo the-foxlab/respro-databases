@@ -31,7 +31,7 @@ EXCLUDED_METADATA_KEYS = {
 # installed version and prompt the user to upgrade when too old. Bump this
 # whenever a change to the TSV contract or metadata schema relies on
 # behaviour only present in a newer ResPro release.
-RESPRO_VERSION_REQUIREMENT = ">=0.1.3"
+RESPRO_VERSION_REQUIREMENT = ">=0.2.0"
 
 
 def load_metadata(metadata_path: Path) -> dict[str, Any]:
