@@ -813,7 +813,8 @@ def main():
         single_rows, formula_rows, non_migrated_rows = extract_rows(wb)
     finally:
         tmp_path.unlink(missing_ok=True)
-    eprint(f"Parsed {len(single_rows) + len(formula_rows) + len(non_migrated_rows)} source rows")
+    # Source is a non-tabular XLSX workbook, so the "Parsed <N> source rows"
+    # line is omitted per the converter output contract (README).
 
     # --- Deduplication ---
     single_rows = deduplicate_single_rows(single_rows, non_migrated_rows)

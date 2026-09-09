@@ -106,13 +106,27 @@ runs:
       id: qc_summary
       shell: bash
       run: |
+        summary_path="${{ inputs.work-dir }}/qc_summary.md"
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
         echo "block<<${EOF}" >> "$GITHUB_OUTPUT"
-        cat "${{ inputs.work-dir }}/qc_summary.md" >> "$GITHUB_OUTPUT"
-        echo "${EOF}" >> "$GITHUB_OUTPUT"
         qc_failed="false"
-        if [ -f "${{ inputs.work-dir }}/qc_summary.json" ]; then
-          status=$(python -c "import json;print(json.load(open('${{ inputs.work-dir }}/qc_summary.json'))['status'])" 2>/dev/null || echo "")
-          if [ "$status" = "failed" ]; then qc_failed="true"; fi
+        if [ ! -f "$summary_path" ]; then
+          # The QC script exited before writing a summary (infrastructure
+          # error: crash, missing respro, import failure). Emit a synthetic
+          # failure block so the PR comment still renders and the workflow
+          # fails cleanly via qc_failed=true.
+          echo "## respro build QC" >> "$GITHUB_OUTPUT"
+          echo "" >> "$GITHUB_OUTPUT"
+          echo "**Source:** \`${{ inputs.source-name }}\`" >> "$GITHUB_OUTPUT"
+          echo "**Status:** ⚠️ **\`respro init\` FAILED** — the QC step did not produce a summary (infrastructure error before QC ran)." >> "$GITHUB_OUTPUT"
+          echo "**Exit code:** \`unknown\`" >> "$GITHUB_OUTPUT"
+          qc_failed="true"
+        else
+          cat "$summary_path" >> "$GITHUB_OUTPUT"
+          if [ -f "${{ inputs.work-dir }}/qc_summary.json" ]; then
+            status=$(python -c "import json;print(json.load(open('${{ inputs.work-dir }}/qc_summary.json'))['status'])" 2>/dev/null || echo "")
+            if [ "$status" = "failed" ]; then qc_failed="true"; fi
+          fi
         fi
+        echo "${EOF}" >> "$GITHUB_OUTPUT"
         echo "qc_failed=${qc_failed}" >> "$GITHUB_OUTPUT"
