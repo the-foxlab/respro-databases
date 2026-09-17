@@ -6,7 +6,7 @@
   "contact": "valentin.tilloy@unilim.fr",
   "publication_pmid": "39349222",
   "website": "https://gitlab.com/vtilloy/charmd-data-db",
-  "description": "ResPro-conversion of the Comprehensive Herpesviruses Antiviral drug Resistance Mutation Database (CHARMD): https://www.unilim.fr/cnr-herpesvirus/outils/codexmv/).",
+  "description": "Comprehensive Herpesviruses Antiviral drug Resistance Mutation Database (CHARMD): https://www.unilim.fr/cnr-herpesvirus/outils/codexmv/.",
   "maintainer_update": "2026-09-16",
   "license": "CC-BY-NC-4.0",
   "tsv_checksum": "sha256:47982890a9ee6da872f35b0b0b0c3571b3e6b5b07a8f3bf315ea9075fea01b50",

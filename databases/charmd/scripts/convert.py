@@ -656,7 +656,7 @@ def build_metadata(source_date: str, rules_content: str) -> dict[str, object]:
         "publication_pmid": "39349222",
         "website": "https://gitlab.com/vtilloy/charmd-data-db",
         "description": (
-            "ResPro-conversion of the Comprehensive Herpesviruses Antiviral drug Resistance Mutation Database (CHARMD): https://www.unilim.fr/cnr-herpesvirus/outils/codexmv/)."
+            "Comprehensive Herpesviruses Antiviral drug Resistance Mutation Database (CHARMD): https://www.unilim.fr/cnr-herpesvirus/outils/codexmv/."
         ),
         "maintainer_update": source_date,
         "license": "CC-BY-NC-4.0",
