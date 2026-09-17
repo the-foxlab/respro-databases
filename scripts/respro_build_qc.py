@@ -227,6 +227,7 @@ def render_summary_markdown(
     parsed: dict[str, Any],
     log_path: Path,
     imported_rules: int | None,
+    imported_formula_rules: int | None,
 ) -> str:
     """Render the ``## respro build QC`` markdown block for the PR body."""
     total_skipped = (
@@ -254,6 +255,8 @@ def render_summary_markdown(
 
     if imported_rules is not None:
         lines.append(f"**Imported single rules:** {imported_rules}")
+    if imported_formula_rules is not None:
+        lines.append(f"**Imported formula rules:** {imported_formula_rules}")
 
     lines.extend(
         [
@@ -270,25 +273,29 @@ def render_summary_markdown(
     return "\n".join(lines)
 
 
-def count_imported_rules(db_path: Path, respro_bin: str) -> int | None:
-    """Best-effort count of imported single rules via ``respro manage``."""
+def count_imported_rules(db_path: Path) -> tuple[int | None, int | None]:
+    """Count imported rules directly from the built SQLite database.
+
+    Returns ``(single_rules, formula_rules)``. The ``respro manage
+    --list-single`` table output cannot be line-counted: rich renders comment
+    cells wrapped across multiple lines, so non-empty line counts over-report
+    (e.g. 7489 lines for 2744 imported rules). The ``resistance_rule`` and
+    ``resistance_formula_rule`` tables in the project database are the
+    authoritative counts of imported single and formula (combination) rules.
+    """
     if not db_path.is_file():
-        return None
+        return None, None
     try:
-        result = subprocess.run(
-            [respro_bin, "manage", "database", str(db_path), "--list-single"],
-            capture_output=True,
-            text=True,
-            timeout=60,
-            check=False,
-        )
-        if result.returncode != 0:
-            return None
-        # Count non-empty output lines (the table body); this is an approximate
-        # count sufficient for a QC summary, not a precise audit.
-        return sum(1 for line in result.stdout.splitlines() if line.strip())
+        import sqlite3
+
+        with sqlite3.connect(f"file:{db_path}?mode=ro", uri=True) as conn:
+            single = int(conn.execute("SELECT COUNT(*) FROM resistance_rule").fetchone()[0])
+            formula = int(
+                conn.execute("SELECT COUNT(*) FROM resistance_formula_rule").fetchone()[0]
+            )
+        return single, formula
     except Exception:  # noqa: BLE001 - count is best-effort
-        return None
+        return None, None
 
 
 def parse_args() -> argparse.Namespace:
@@ -359,6 +366,7 @@ def write_failure_summary(
         "status": "failed",
         "exit_code": 2,
         "imported_rules": None,
+        "imported_formula_rules": None,
         "ref_aa_skipped": 0,
         "feature_skipped": 0,
         "formula_skipped": 0,
@@ -446,7 +454,7 @@ def main() -> int:
     log_path.write_text(log, encoding="utf-8")
 
     parsed = parse_build_log(log)
-    imported_rules = count_imported_rules(db_path, args.respro_bin)
+    imported_rules, imported_formula_rules = count_imported_rules(db_path)
 
     summary_md = render_summary_markdown(
         source_name=args.source_name,
@@ -454,6 +462,7 @@ def main() -> int:
         parsed=parsed,
         log_path=log_path,
         imported_rules=imported_rules,
+        imported_formula_rules=imported_formula_rules,
     )
     summary_md_path.write_text(summary_md + "\n", encoding="utf-8")
 
@@ -470,6 +479,7 @@ def main() -> int:
         ),
         "exit_code": result.returncode,
         "imported_rules": imported_rules,
+        "imported_formula_rules": imported_formula_rules,
         "ref_aa_skipped": parsed["ref_aa_skipped"],
         "feature_skipped": parsed["feature_skipped"],
         "formula_skipped": parsed["formula_skipped"],
