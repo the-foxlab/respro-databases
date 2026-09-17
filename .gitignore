@@ -6,7 +6,6 @@ __pycache__/
 
 .pytest_cache/
 .mypy_cache/
-charmd/
 .act/
 
 .DS_Store

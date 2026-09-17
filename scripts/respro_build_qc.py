@@ -227,6 +227,7 @@ def render_summary_markdown(
     parsed: dict[str, Any],
     log_path: Path,
     imported_rules: int | None,
+    imported_formula_rules: int | None,
 ) -> str:
     """Render the ``## respro build QC`` markdown block for the PR body."""
     total_skipped = (
@@ -254,15 +255,34 @@ def render_summary_markdown(
 
     if imported_rules is not None:
         lines.append(f"**Imported single rules:** {imported_rules}")
+    if imported_formula_rules is not None:
+        lines.append(f"**Imported formula rules:** {imported_formula_rules}")
 
     lines.extend(
         [
             f"**Skipped \u2014 reference AA mismatch:** {parsed['ref_aa_skipped']}",
             f"**Skipped \u2014 feature not in GenBank:** {parsed['feature_skipped']}",
             f"**Skipped \u2014 formula member missing:** {parsed['formula_skipped']}",
-            f"**Full log:** `{log_path}`",
+            "",
+            "<details>",
+            "<summary>Raw <code>respro init</code> output</summary>",
+            "",
+            "```text",
         ]
     )
+
+    # Embed the raw respro stream verbatim. The work dir is temporary, so a
+    # log-path reference in the PR body would point at a file nobody can read.
+    # GitHub PR bodies cap at ~64K characters; truncate from the head (the
+    # skipped-rule details live at the start of the stream) and keep the tail
+    # (the final "Loaded N rule(s)" / error lines) when it would overflow.
+    log_text = log_path.read_text(encoding="utf-8", errors="replace").rstrip("\n")
+    max_log_chars = 40000
+    if len(log_text) > max_log_chars:
+        head, tail = log_text[: max_log_chars // 2], log_text[-max_log_chars // 2 :]
+        log_text = f"{head}\n... [truncated {len(log_text) - max_log_chars} characters; see the workflow run log for the full stream] ...\n{tail}"
+    lines.append(log_text)
+    lines.extend(["```", "</details>"])
 
     if parsed["error_excerpt"]:
         lines.extend(["", "```", parsed["error_excerpt"], "```"])
@@ -270,25 +290,29 @@ def render_summary_markdown(
     return "\n".join(lines)
 
 
-def count_imported_rules(db_path: Path, respro_bin: str) -> int | None:
-    """Best-effort count of imported single rules via ``respro manage``."""
+def count_imported_rules(db_path: Path) -> tuple[int | None, int | None]:
+    """Count imported rules directly from the built SQLite database.
+
+    Returns ``(single_rules, formula_rules)``. The ``respro manage
+    --list-single`` table output cannot be line-counted: rich renders comment
+    cells wrapped across multiple lines, so non-empty line counts over-report
+    (e.g. 7489 lines for 2744 imported rules). The ``resistance_rule`` and
+    ``resistance_formula_rule`` tables in the project database are the
+    authoritative counts of imported single and formula (combination) rules.
+    """
     if not db_path.is_file():
-        return None
+        return None, None
     try:
-        result = subprocess.run(
-            [respro_bin, "manage", "database", str(db_path), "--list-single"],
-            capture_output=True,
-            text=True,
-            timeout=60,
-            check=False,
-        )
-        if result.returncode != 0:
-            return None
-        # Count non-empty output lines (the table body); this is an approximate
-        # count sufficient for a QC summary, not a precise audit.
-        return sum(1 for line in result.stdout.splitlines() if line.strip())
+        import sqlite3
+
+        with sqlite3.connect(f"file:{db_path}?mode=ro", uri=True) as conn:
+            single = int(conn.execute("SELECT COUNT(*) FROM resistance_rule").fetchone()[0])
+            formula = int(
+                conn.execute("SELECT COUNT(*) FROM resistance_formula_rule").fetchone()[0]
+            )
+        return single, formula
     except Exception:  # noqa: BLE001 - count is best-effort
-        return None
+        return None, None
 
 
 def parse_args() -> argparse.Namespace:
@@ -359,6 +383,7 @@ def write_failure_summary(
         "status": "failed",
         "exit_code": 2,
         "imported_rules": None,
+        "imported_formula_rules": None,
         "ref_aa_skipped": 0,
         "feature_skipped": 0,
         "formula_skipped": 0,
@@ -434,19 +459,30 @@ def main() -> int:
         metadata_path=metadata_path,
         respro_bin=args.respro_bin,
     )
+    # Run respro with -vv so the captured stream includes the detailed log
+    # (skipped-rule positions, mismatch details). The raw stream is embedded
+    # verbatim into the QC summary: the work dir is temporary, so a log-path
+    # reference in the PR body would point at a file nobody can read.
+    cmd.insert(1, "-vv")
     eprint(f"Running: {' '.join(cmd)}")
+    # Rich (respro's logger) wraps at 80 columns when stdout is not a TTY.
+    # Widen via COLUMNS so the captured stream stays readable in the PR body.
+    env = {**os.environ, "COLUMNS": "160"}
     result = subprocess.run(
         cmd,
         capture_output=True,
         text=True,
         timeout=600,
         check=False,
+        env=env,
     )
-    log = result.stdout + result.stderr
+    # respro logs through rich on stderr and prints the final ✓ line on stdout;
+    # concatenating stderr first preserves chronological order in the summary.
+    log = result.stderr + result.stdout
     log_path.write_text(log, encoding="utf-8")
 
     parsed = parse_build_log(log)
-    imported_rules = count_imported_rules(db_path, args.respro_bin)
+    imported_rules, imported_formula_rules = count_imported_rules(db_path)
 
     summary_md = render_summary_markdown(
         source_name=args.source_name,
@@ -454,6 +490,7 @@ def main() -> int:
         parsed=parsed,
         log_path=log_path,
         imported_rules=imported_rules,
+        imported_formula_rules=imported_formula_rules,
     )
     summary_md_path.write_text(summary_md + "\n", encoding="utf-8")
 
@@ -470,6 +507,7 @@ def main() -> int:
         ),
         "exit_code": result.returncode,
         "imported_rules": imported_rules,
+        "imported_formula_rules": imported_formula_rules,
         "ref_aa_skipped": parsed["ref_aa_skipped"],
         "feature_skipped": parsed["feature_skipped"],
         "formula_skipped": parsed["formula_skipped"],

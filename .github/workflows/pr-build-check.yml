@@ -19,6 +19,7 @@ jobs:
       herpesdrg: ${{ steps.filter.outputs.herpesdrg }}
       hsv_daehne_jaki: ${{ steps.filter.outputs.hsv_daehne_jaki }}
       stanford-hiv: ${{ steps.filter.outputs.stanford-hiv }}
+      charmd: ${{ steps.filter.outputs.charmd }}
       any: ${{ steps.filter.outputs.any }}
     steps:
       - name: Checkout
@@ -31,6 +32,8 @@ jobs:
           # `any` covers shared infrastructure (QC script, composite action,
           # this workflow) so a change there triggers a full build check.
           filters: |
+            charmd:
+              - 'databases/charmd/**'
             herpesdrg:
               - 'databases/herpesdrg/**'
             hsv_daehne_jaki:
@@ -38,6 +41,7 @@ jobs:
             stanford-hiv:
               - 'databases/stanford-hiv/**'
             any:
+              - 'databases/charmd/**'
               - 'databases/herpesdrg/**'
               - 'databases/hsv_daehne_jaki/**'
               - 'databases/stanford-hiv/**'
@@ -55,6 +59,9 @@ jobs:
         # One job per database; the `if` guard on each step skips databases
         # that were not touched by the PR.
         database:
+          - name: charmd
+            dir: databases/charmd/output
+            changed: ${{ needs.detect-changed-databases.outputs.charmd }}
           - name: herpesdrg
             dir: databases/herpesdrg/output
             changed: ${{ needs.detect-changed-databases.outputs.herpesdrg }}

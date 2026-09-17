@@ -1,0 +1,34 @@
+# Non-migrated CHARMD rows
+# Reference: X17403.1
+# Columns: reason	source_line	feature	source_mutation	antiviral	details
+
+reason	source_line	feature	source_mutation	antiviral	details
+indel_undeterministic	787	UL27	301-311del	MBV	Range deletion 301-311del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Laboratory strain | Marker transfer: Recombinant | Assay details: Yield reduction assay, SEAP
+indel_undeterministic	437	UL54	981-982del	CDV	Range deletion 981-982del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Clincial isolate | Marker transfer: Recombinant | Assay details: PRA, ELISA tests, flow cytometry and DNA-DNA hybridization assays, quantitative real-time PCR, reporter cell lines, polymerase biochemical assays, marker transfer
+indel_undeterministic	438	UL54	981-982del	FOS	Range deletion 981-982del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Clincial isolate | Marker transfer: Recombinant | Assay details: PRA, ELISA tests, flow cytometry and DNA-DNA hybridization assays, quantitative real-time PCR, reporter cell lines, polymerase biochemical assays, marker transfer
+indel_undeterministic	436	UL54	981-982del	GCV	Range deletion 981-982del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Clincial isolate | Marker transfer: Recombinant | Assay details: PRA, ELISA tests, flow cytometry and DNA-DNA hybridization assays, quantitative real-time PCR, reporter cell lines, polymerase biochemical assays, marker transfer
+indel_undeterministic	967	UL54	D981del2	CDV	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	968	UL54	D981del2	CDV	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	969	UL54	D981del2	CDV	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	970	UL54	D981del2	FOS	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	971	UL54	D981del2	FOS	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	972	UL54	D981del2	FOS	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	973	UL54	D981del2	GCV	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	974	UL54	D981del2	GCV	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	975	UL54	D981del2	GCV	Deletion D981del2 specifies a length but only the first anchor AA; deleted block cannot be derived without the reference sequence | Source origin: Clinical Isolate
+indel_undeterministic	398	UL54	in884T		Insertion in884T has no anchor AA; cannot derive a deterministic reference | Observation: Polymorphisme naturel
+indel_undeterministic	401	UL54	in885S		Insertion in885S has no anchor AA; cannot derive a deterministic reference | Observation: Polymorphisme naturel
+indel_undeterministic	402	UL54	in885T		Insertion in885T has no anchor AA; cannot derive a deterministic reference | Observation: Polymorphisme naturel
+indel_undeterministic	573	UL97	591-607del	GCV	Range deletion 591-607del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Laboratory strain, Clinical Isolate | Marker transfer: Recombinant | Assay details: PRA, ELISA tests, flow cytometry and DNA-DNA hybridization assays, quantitative real-time PCR, reporter cell lines, polymerase biochemical assays, marker transfer
+missing_antiviral	18	UL54	E235G		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
+missing_antiviral	284	UL54	F718L		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
+missing_antiviral	285	UL54	F718S		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
+missing_antiviral	362	UL54	G822D		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: non viable
+missing_antiviral	363	UL54	M828V		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: non viable
+missing_antiviral	42	UL54	N345S		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure, confirmed by recombinant phenotyping
+missing_antiviral	210	UL54	R581H		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
+missing_antiviral	105	UL54	V482G		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
+missing_antiviral	48	UL54	Y380C		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
+missing_antiviral	621	UL97	D605E		ResPro requires antiviral; CHARMD row was retained in the audit only | Observation: IS50 : < 2.2 selon Chou 2020 :
+missing_antiviral	630	UL97	G623S		ResPro requires antiviral; CHARMD row was retained in the audit only
+missing_antiviral	634	UL97	V665I		ResPro requires antiviral; CHARMD row was retained in the audit only
