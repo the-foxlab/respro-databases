@@ -263,9 +263,26 @@ def render_summary_markdown(
             f"**Skipped \u2014 reference AA mismatch:** {parsed['ref_aa_skipped']}",
             f"**Skipped \u2014 feature not in GenBank:** {parsed['feature_skipped']}",
             f"**Skipped \u2014 formula member missing:** {parsed['formula_skipped']}",
-            f"**Full log:** `{log_path}`",
+            "",
+            "<details>",
+            "<summary>Raw <code>respro init</code> output</summary>",
+            "",
+            "```text",
         ]
     )
+
+    # Embed the raw respro stream verbatim. The work dir is temporary, so a
+    # log-path reference in the PR body would point at a file nobody can read.
+    # GitHub PR bodies cap at ~64K characters; truncate from the head (the
+    # skipped-rule details live at the start of the stream) and keep the tail
+    # (the final "Loaded N rule(s)" / error lines) when it would overflow.
+    log_text = log_path.read_text(encoding="utf-8", errors="replace").rstrip("\n")
+    max_log_chars = 40000
+    if len(log_text) > max_log_chars:
+        head, tail = log_text[: max_log_chars // 2], log_text[-max_log_chars // 2 :]
+        log_text = f"{head}\n... [truncated {len(log_text) - max_log_chars} characters; see the workflow run log for the full stream] ...\n{tail}"
+    lines.append(log_text)
+    lines.extend(["```", "</details>"])
 
     if parsed["error_excerpt"]:
         lines.extend(["", "```", parsed["error_excerpt"], "```"])
@@ -442,15 +459,26 @@ def main() -> int:
         metadata_path=metadata_path,
         respro_bin=args.respro_bin,
     )
+    # Run respro with -vv so the captured stream includes the detailed log
+    # (skipped-rule positions, mismatch details). The raw stream is embedded
+    # verbatim into the QC summary: the work dir is temporary, so a log-path
+    # reference in the PR body would point at a file nobody can read.
+    cmd.insert(1, "-vv")
     eprint(f"Running: {' '.join(cmd)}")
+    # Rich (respro's logger) wraps at 80 columns when stdout is not a TTY.
+    # Widen via COLUMNS so the captured stream stays readable in the PR body.
+    env = {**os.environ, "COLUMNS": "160"}
     result = subprocess.run(
         cmd,
         capture_output=True,
         text=True,
         timeout=600,
         check=False,
+        env=env,
     )
-    log = result.stdout + result.stderr
+    # respro logs through rich on stderr and prints the final ✓ line on stdout;
+    # concatenating stderr first preserves chronological order in the summary.
+    log = result.stderr + result.stdout
     log_path.write_text(log, encoding="utf-8")
 
     parsed = parse_build_log(log)
