@@ -18,7 +18,7 @@
         "description": "Comprehensive Herpesviruses Antiviral drug Resistance Mutation Database (CHARMD): https://www.unilim.fr/cnr-herpesvirus/outils/codexmv/.",
         "maintainer_update": "2026-09-21",
         "license": "CC-BY-NC-4.0",
-        "tsv_checksum": "sha256:18567a6cc775256a4be8ce343e147bc2227fd4199221eb0b8c5442da0daf1820"
+        "tsv_checksum": "sha256:c1ef3789e9903226933a6ededa0d0dbe86fb313c58cb69434bcb4698b0d653ca"
       }
     },
     {
