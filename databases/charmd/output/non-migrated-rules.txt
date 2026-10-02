@@ -19,7 +19,7 @@ indel_undeterministic	975	UL54	D981del2	GCV	Deletion D981del2 specifies a length
 indel_undeterministic	398	UL54	in884T		Insertion in884T has no anchor AA; cannot derive a deterministic reference | Observation: Natural polymorphism
 indel_undeterministic	401	UL54	in885S		Insertion in885S has no anchor AA; cannot derive a deterministic reference | Observation: Natural polymorphism
 indel_undeterministic	402	UL54	in885T		Insertion in885T has no anchor AA; cannot derive a deterministic reference | Observation: Natural polymorphism
-indel_undeterministic	573	UL97	591-607del	GCV	Range deletion 591-607del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Laboratory strain, Clinical Isolate | Marker transfer: Recombinant | Assay details: PRA, ELISA tests, flow cytometry and DNA-DNA hybridization assays, quantitative real-time PCR, reporter cell lines, polymerase biochemical assays, marker transfer | Observation: Other publication ID :
+indel_undeterministic	573	UL97	591-607del	GCV	Range deletion 591-607del supplies no deleted sequence; deleted block cannot be derived without the reference sequence | Source origin: Laboratory strain, Clinical Isolate | Marker transfer: Recombinant | Assay details: PRA, ELISA tests, flow cytometry and DNA-DNA hybridization assays, quantitative real-time PCR, reporter cell lines, polymerase biochemical assays, marker transfer
 missing_antiviral	18	UL54	E235G		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
 missing_antiviral	284	UL54	F718L		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
 missing_antiviral	285	UL54	F718S		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
@@ -29,6 +29,6 @@ missing_antiviral	42	UL54	N345S		ResPro requires antiviral; CHARMD row was retai
 missing_antiviral	210	UL54	R581H		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
 missing_antiviral	105	UL54	V482G		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
 missing_antiviral	48	UL54	Y380C		ResPro requires antiviral; CHARMD row was retained in the audit only | Marker transfer: Recombinant | Observation: Victor trial , before any exposure | Viability: Non viable
-missing_antiviral	621	UL97	D605E		ResPro requires antiviral; CHARMD row was retained in the audit only | Observation: IS50 : < 2.2 according to Chou 2020 :
+missing_antiviral	621	UL97	D605E		ResPro requires antiviral; CHARMD row was retained in the audit only | Observation: IS50 : < 2.2 according to Chou 2020
 missing_antiviral	630	UL97	G623S		ResPro requires antiviral; CHARMD row was retained in the audit only
 missing_antiviral	634	UL97	V665I		ResPro requires antiviral; CHARMD row was retained in the audit only

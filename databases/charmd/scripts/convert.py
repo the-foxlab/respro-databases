@@ -345,8 +345,10 @@ def parse_fold_ic50(raw: str) -> tuple[float | None, str]:
 
 def publication_values(row: dict[str, str]) -> list[str]:
     # PMIDs from the dedicated pubmed_id column plus any cross-referenced in
-    # the observation field ("Autre publi ID : <PMID> ..."). Both sources are
-    # merged so a rule carries every supporting publication.
+    # the observation field ("Other publication ID : <PMID> ..."). Both
+    # sources are merged so a rule carries every supporting publication.
+    # The scan is a plain digit match over the whole observation, so it is
+    # independent of the label wording.
     tokens = re.findall(r"\b\d{7,9}\b", norm(row.get("pubmed_id")))
     tokens.extend(re.findall(r"\b\d{7,9}\b", norm(row.get("observation"))))
     return [f"PMID:{token}" for token in tokens]
@@ -364,13 +366,17 @@ def row_comment(row: dict[str, str]) -> str:
             parts.append(f"{label}: {value}")
 
     # The observation column is unstructured free text that often carries
-    # cross-referenced PMIDs ("Autre publi ID"). Those are harvested into the
-    # publication column by publication_values(); the residual text (clinical
-    # context, alternative fold values, curation notes) is recorded here.
+    # cross-referenced PMIDs ("Other publication ID"). Those are harvested
+    # into the publication column by publication_values(); the residual text
+    # (clinical context, alternative fold values, curation notes) is recorded
+    # here. The label itself is stripped so it does not leak into comments.
     observation = clean_text(row.get("observation"))
     if observation:
-        residual = re.sub(r"Autre publi ID\s*:", "", observation)
+        residual = re.sub(r"Other publication\s*ID\s*:?", "", observation)
         residual = re.sub(r"\b\d{7,9}\b", "", residual)
+        # Digit removal can leave orphan separators (",", ":") between the
+        # stripped label and residual text; drop leading/trailing ones.
+        residual = re.sub(r"^[\s,:;]+|[\s,:;]+$", "", residual)
         residual = clean_text(residual)
         if residual:
             parts.append(f"Observation: {residual}")
