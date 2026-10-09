@@ -17,8 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       herpesdrg: ${{ steps.filter.outputs.herpesdrg }}
-      hsv_daehne_jaki: ${{ steps.filter.outputs.hsv_daehne_jaki }}
+      simplexvirus-db: ${{ steps.filter.outputs.simplexvirus-db }}
       stanford-hiv: ${{ steps.filter.outputs.stanford-hiv }}
+      who-influenza: ${{ steps.filter.outputs.who-influenza }}
       charmd: ${{ steps.filter.outputs.charmd }}
       any: ${{ steps.filter.outputs.any }}
     steps:
@@ -36,15 +37,18 @@ jobs:
               - 'databases/charmd/**'
             herpesdrg:
               - 'databases/herpesdrg/**'
-            hsv_daehne_jaki:
-              - 'databases/hsv_daehne_jaki/**'
+            simplexvirus-db:
+              - 'databases/simplexvirus-db/**'
             stanford-hiv:
               - 'databases/stanford-hiv/**'
+            who-influenza:
+              - 'databases/who-influenza/**'
             any:
               - 'databases/charmd/**'
               - 'databases/herpesdrg/**'
-              - 'databases/hsv_daehne_jaki/**'
+              - 'databases/simplexvirus-db/**'
               - 'databases/stanford-hiv/**'
+              - 'databases/who-influenza/**'
               - 'scripts/respro_build_qc.py'
               - '.github/actions/respro-build-qc/**'
               - '.github/workflows/pr-build-check.yml'
@@ -65,12 +69,15 @@ jobs:
           - name: herpesdrg
             dir: databases/herpesdrg/output
             changed: ${{ needs.detect-changed-databases.outputs.herpesdrg }}
-          - name: hsv_daehne_jaki
-            dir: databases/hsv_daehne_jaki/output
-            changed: ${{ needs.detect-changed-databases.outputs.hsv_daehne_jaki }}
+          - name: simplexvirus-db
+            dir: databases/simplexvirus-db/output
+            changed: ${{ needs.detect-changed-databases.outputs.simplexvirus-db }}
           - name: stanford-hiv
             dir: databases/stanford-hiv/output
             changed: ${{ needs.detect-changed-databases.outputs.stanford-hiv }}
+          - name: who-influenza
+            dir: databases/who-influenza/output
+            changed: ${{ needs.detect-changed-databases.outputs.who-influenza }}
 
     steps:
       - name: Checkout

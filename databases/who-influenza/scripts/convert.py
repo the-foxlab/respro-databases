@@ -1169,6 +1169,12 @@ def main() -> int:
         "tsv_checksum": "sha256:" + hashlib.sha256(
             rules_content.encode("utf-8")
         ).hexdigest(),
+        "interpretation_algorithms": [
+            {
+                "name": "drug_interpretation",
+                "method": "by_phenotype",
+            },
+        ],
     }
     metadata_path = out_dir / "metadata.json"
     metadata_path.write_text(
