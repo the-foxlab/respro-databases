@@ -1,4 +1,4 @@
-"""Tests for WHO Influenza conversion logic (databases/WHO_Influenza)."""
+"""Tests for WHO Influenza conversion logic (databases/who-influenza)."""
 
 import sys
 from pathlib import Path
