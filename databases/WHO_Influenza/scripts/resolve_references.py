@@ -29,7 +29,6 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-
 # pdfplumber is imported lazily so the pure citation-parsing helpers are
 # usable without the dependency (e.g. in unit tests).
 pdfplumber = None
