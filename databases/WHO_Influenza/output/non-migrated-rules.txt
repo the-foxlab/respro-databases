@@ -1,0 +1,10 @@
+# Non-migrated WHO Influenza rows
+# Columns: reason	table	page	subtype	substitution	antiviral	details
+
+reason	table	page	subtype	substitution	antiviral	details
+all_phenotypes_unknown	human-nai	7	A(H3N2)	E119V + Del 247-250g		
+reference_mismatch	avian-nai	4	N7	S110N+E119D		reference mismatch: E not at position 119
+reference_mismatch	human-nai	6	A(H3N2)	N245Y		reference mismatch: N not at position 245
+reference_mismatch	human-nai	9	Type B	K186R+I262T		reference mismatch: K not at position 186
+reference_mismatch	pa	1	A(H1N1)	E18G		reference mismatch: E not at position 18
+reference_mismatch	pa	1	A(H3N2)	L28P		reference mismatch: L not at position 28

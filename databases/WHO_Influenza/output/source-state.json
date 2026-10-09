@@ -1,0 +1,19 @@
+{
+  "sources": {
+    "human-nai": {
+      "url": "https://cdn.who.int/media/docs/default-source/influenza/laboratory---network/quality-assurance/human-nai-marker-table.pdf",
+      "sha256": "sha256:7fae5639563acc893572f9cbf8c7e05692e7641980ec11fb9db3b36f17810335",
+      "footer_date": "2026-07-17"
+    },
+    "avian-nai": {
+      "url": "https://cdn.who.int/media/docs/default-source/influenza/avwg/avian-nai-marker-who-table.pdf",
+      "sha256": "sha256:cffdcf1bdd80a0a8509a7905752406b1dbac85738335ecb552a6fbe3c0566286",
+      "footer_date": "2026-07-17"
+    },
+    "pa": {
+      "url": "https://cdn.who.int/media/docs/default-source/influenza/laboratory---network/quality-assurance/antiviral-susceptibility-influenza/pa-marker-who-table_28-11-2025_updated.pdf",
+      "sha256": "sha256:adaff749c6eb2e6dc6d950b86cb07bf7fce4bc49bac1fd22f1dbd3721e4932a8",
+      "footer_date": "2026-06-30"
+    }
+  }
+}

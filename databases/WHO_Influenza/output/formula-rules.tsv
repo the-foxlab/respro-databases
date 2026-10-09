@@ -1,0 +1,170 @@
+group_id	antiviral	expression	phenotype	fold_ic50	publication	source	comment
+G00001	laninamivir	(M00001 AND M00002)	highly reduced inhibition	274	doi:10.1128/jvi.01580-17,doi:10.1128/jvi.01679-20	WHO avian NAI	Origin of virus: in vitro; reverse genetics/oseltamivir used
+G00002	oseltamivir	(M00001 AND M00002)	reduced inhibition	43	doi:10.1128/jvi.01580-17,doi:10.1128/jvi.01679-20	WHO avian NAI	Origin of virus: in vitro; reverse genetics/oseltamivir used
+G00003	peramivir	(M00001 AND M00002)	reduced inhibition	87	doi:10.1128/jvi.01580-17,doi:10.1128/jvi.01679-20	WHO avian NAI	Origin of virus: in vitro; reverse genetics/oseltamivir used
+G00004	zanamivir	(M00001 AND M00002)	highly reduced inhibition	556	doi:10.1128/jvi.01580-17,doi:10.1128/jvi.01679-20	WHO avian NAI	Origin of virus: in vitro; reverse genetics/oseltamivir used
+G00005	oseltamivir	(M00003 AND M00004)	normal inhibition	4	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: surveillance studies
+G00006	zanamivir	(M00003 AND M00004)	reduced inhibition	14	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: surveillance studies
+G00007	oseltamivir	(M00005 AND M00006)	normal inhibition	6	doi:10.1111/irv.12113	WHO human NAI	Origin of virus: surveillance studies
+G00008	peramivir	(M00005 AND M00006)	highly reduced inhibition	257	doi:10.1111/irv.12113	WHO human NAI	Origin of virus: surveillance studies
+G00009	zanamivir	(M00005 AND M00006)	reduced inhibition	10	doi:10.1111/irv.12113	WHO human NAI	Origin of virus: surveillance studies
+G00010	laninamivir	(M00007 AND M00008)	normal inhibition	3	doi:10.1111/irv.12187	WHO human NAI	Origin of virus: surveillance studies | IC50 fold-change in source: <3
+G00011	oseltamivir	(M00007 AND M00008)	normal inhibition		doi:10.1111/irv.12187	WHO human NAI	Origin of virus: surveillance studies
+G00012	peramivir	(M00007 AND M00008)	highly reduced inhibition	487	doi:10.1111/irv.12187	WHO human NAI	Origin of virus: surveillance studies
+G00013	zanamivir	(M00007 AND M00008)	normal inhibition		doi:10.1111/irv.12187	WHO human NAI	Origin of virus: surveillance studies
+G00014	laninamivir	(M00009 AND M00010)	highly reduced inhibition	280	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 86–280
+G00015	oseltamivir	(M00009 AND M00010)	reduced inhibition	44	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 31–44
+G00016	peramivir	(M00009 AND M00010)	highly reduced inhibition	10074	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 7158–10074
+G00017	zanamivir	(M00009 AND M00010)	highly reduced inhibition	573	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 225–573
+G00018	laninamivir	(M00011 AND M00012)	normal inhibition	3	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 1–3
+G00019	oseltamivir	(M00011 AND M00012)	reduced inhibition	6	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 2–6
+G00020	peramivir	(M00011 AND M00012)	reduced inhibition	46	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 4–46
+G00021	zanamivir	(M00011 AND M00012)	reduced inhibition	6	doi:10.1016/j.antiviral.2022.105280	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 3–6
+G00022	oseltamivir	(M00013 AND M00014)	reduced inhibition	16	doi:10.1016/j.antiviral.2006.10.004	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies
+G00023	peramivir	(M00013 AND M00014)	normal inhibition	1	doi:10.1016/j.antiviral.2006.10.004	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies
+G00024	zanamivir	(M00013 AND M00014)	normal inhibition	1	doi:10.1016/j.antiviral.2006.10.004	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies
+G00025	oseltamivir	(M00015 AND M00016)	highly reduced inhibition	1530	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00026	oseltamivir	(M00017 AND M00016)	highly reduced inhibition	160	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00027	oseltamivir	(M00018 AND M00016)	highly reduced inhibition	801	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00028	peramivir	(M00015 AND M00016)	highly reduced inhibition	2686	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00029	peramivir	(M00017 AND M00016)	highly reduced inhibition	1629	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00030	peramivir	(M00018 AND M00016)	highly reduced inhibition	7692	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics | IC50 fold-change in source: >7692
+G00031	zanamivir	(M00015 AND M00016)	reduced inhibition	50	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00032	zanamivir	(M00017 AND M00016)	reduced inhibition	65	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00033	zanamivir	(M00018 AND M00016)	reduced inhibition	76	doi:10.1128/jvi.02485-14	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00034	oseltamivir	(M00019 AND M00020 AND M00021)	reduced inhibition	77	doi:10.1099/vir.0.017459-0	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies
+G00035	zanamivir	(M00019 AND M00020 AND M00021)	normal inhibition	1	doi:10.1099/vir.0.017459-0	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies
+G00036	oseltamivir	(M00020 AND M00021)	reduced inhibition	14	doi:10.1093/infdis/jix003	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies; in vitro | Origin of virus (WHO avian NAI): surveillance studies; in vitro
+G00037	oseltamivir	(M00022 AND M00016)	highly reduced inhibition	8024	doi:10.1128/aac.00334-09	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics; in vitro/zanamivir used | Origin of virus (WHO avian NAI): reverse genetics; in vitro/zanamivir used
+G00038	oseltamivir	(M00023 AND M00016)	highly reduced inhibition	1925	doi:10.1128/aac.00334-09	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics; in vitro/zanamivir used | Origin of virus (WHO avian NAI): reverse genetics; in vitro/zanamivir used
+G00039	peramivir	(M00020 AND M00021)	normal inhibition	5	doi:10.1093/infdis/jix003	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies; in vitro | Origin of virus (WHO avian NAI): surveillance studies; in vitro
+G00040	peramivir	(M00022 AND M00016)	highly reduced inhibition	3340	doi:10.1128/aac.00334-09	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics; in vitro/zanamivir used | Origin of virus (WHO avian NAI): reverse genetics; in vitro/zanamivir used
+G00041	peramivir	(M00023 AND M00016)	highly reduced inhibition	2106	doi:10.1128/aac.00334-09	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics; in vitro/zanamivir used | Origin of virus (WHO avian NAI): reverse genetics; in vitro/zanamivir used
+G00042	zanamivir	(M00020 AND M00021)	normal inhibition	1	doi:10.1093/infdis/jix003	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies; in vitro | Origin of virus (WHO avian NAI): surveillance studies; in vitro
+G00043	zanamivir	(M00022 AND M00016)	normal inhibition	3	doi:10.1128/aac.00334-09	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics; in vitro/zanamivir used | Origin of virus (WHO avian NAI): reverse genetics; in vitro/zanamivir used
+G00044	zanamivir	(M00023 AND M00016)	normal inhibition	2	doi:10.1128/aac.00334-09	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics; in vitro/zanamivir used | Origin of virus (WHO avian NAI): reverse genetics; in vitro/zanamivir used
+G00045	laninamivir	(M00024 AND M00025)	reduced inhibition	19	doi:10.1016/j.antiviral.2023.105679	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies | IC50 fold-change in source: 16–19 | IC50 fold-change in source: 16-19
+G00046	oseltamivir	(M00024 AND M00025)	reduced inhibition	74	doi:10.1016/j.antiviral.2023.105679	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies | IC50 fold-change in source: 51–74
+G00047	peramivir	(M00024 AND M00025)	reduced inhibition	90	doi:10.1016/j.antiviral.2023.105679	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies | IC50 fold-change in source: 73–90
+G00048	zanamivir	(M00024 AND M00025)	reduced inhibition	86	doi:10.1016/j.antiviral.2023.105679	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): surveillance studies | Origin of virus (WHO avian NAI): surveillance studies | IC50 fold-change in source: 76–86
+G00049	laninamivir	(M00026 AND M00027)	normal inhibition	0.4	doi:10.1128/jvi.01679-20,doi:10.1128/jvi.01514-15	WHO avian NAI	Origin of virus: in vitro; reverse genetics/zanamivir used
+G00050	oseltamivir	(M00026 AND M00027)	normal inhibition	6	doi:10.1128/jvi.01679-20,doi:10.1128/jvi.01514-15	WHO avian NAI	Origin of virus: in vitro; reverse genetics/zanamivir used
+G00051	peramivir	(M00026 AND M00027)	normal inhibition	5	doi:10.1128/jvi.01679-20,doi:10.1128/jvi.01514-15	WHO avian NAI	Origin of virus: in vitro; reverse genetics/zanamivir used
+G00052	zanamivir	(M00026 AND M00027)	reduced inhibition	14	doi:10.1128/jvi.01679-20,doi:10.1128/jvi.01514-15	WHO avian NAI	Origin of virus: in vitro; reverse genetics/zanamivir used
+G00053	laninamivir	(M00028 AND M00029)	highly reduced inhibition	250	doi:10.1128/aac.01364-13	WHO human NAI	Origin of virus: surveillance studies; in vitro; reverse genetics | IC50 fold-change in source: >250
+G00054	oseltamivir	(M00028 AND M00029)	highly reduced inhibition	6000	doi:10.1128/aac.01364-13	WHO human NAI	Origin of virus: surveillance studies; in vitro; reverse genetics | IC50 fold-change in source: >6000
+G00055	oseltamivir	(M00028 AND M00030)	highly reduced inhibition	1571	doi:10.1128/aac.01699-10	WHO human NAI	Origin of virus: reverse genetics
+G00056	oseltamivir	(M00028 AND M00031)	highly reduced inhibition	2286	doi:10.1128/jcm.01732-10,doi:10.1086/508777	WHO human NAI	Origin of virus: clinical detection/oseltamivir used | IC50 fold-change in source: 293–2286
+G00057	oseltamivir	(M00028 AND M00032)	highly reduced inhibition	325	doi:10.1128/aac.03667-14	WHO human NAI	Origin of virus: clinical detection/oseltamivir used+zanamivir used
+G00058	peramivir	(M00028 AND M00029)	highly reduced inhibition	110	doi:10.1128/aac.01364-13	WHO human NAI	Origin of virus: surveillance studies; in vitro; reverse genetics | IC50 fold-change in source: >110
+G00059	peramivir	(M00028 AND M00031)	normal inhibition	7	doi:10.1128/jcm.01732-10,doi:10.1086/508777	WHO human NAI	Origin of virus: clinical detection/oseltamivir used
+G00060	peramivir	(M00028 AND M00032)	highly reduced inhibition	101	doi:10.1128/aac.03667-14	WHO human NAI	Origin of virus: clinical detection/oseltamivir used+zanamivir used
+G00061	zanamivir	(M00028 AND M00029)	highly reduced inhibition	800	doi:10.1128/aac.01364-13	WHO human NAI	Origin of virus: surveillance studies; in vitro; reverse genetics | IC50 fold-change in source: >800
+G00062	zanamivir	(M00028 AND M00030)	normal inhibition	5	doi:10.1128/aac.01699-10	WHO human NAI	Origin of virus: reverse genetics
+G00063	zanamivir	(M00028 AND M00031)	normal inhibition	2	doi:10.1128/jcm.01732-10,doi:10.1086/508777	WHO human NAI	Origin of virus: clinical detection/oseltamivir used
+G00064	zanamivir	(M00028 AND M00032)	highly reduced inhibition	220	doi:10.1128/aac.03667-14	WHO human NAI	Origin of virus: clinical detection/oseltamivir used+zanamivir used
+G00065	laninamivir	(M00033 AND M00034)	normal inhibition	4	doi:10.1016/j.antiviral.2016.06.001	WHO human NAI	Origin of virus: surveillance studies/clinical detection | IC50 fold-change in source: 3–4
+G00066	oseltamivir	(M00033 AND M00034)	reduced inhibition	31	doi:10.1016/j.antiviral.2016.06.001	WHO human NAI	Origin of virus: surveillance studies/clinical detection | IC50 fold-change in source: 12–31
+G00067	peramivir	(M00033 AND M00034)	normal inhibition	2	doi:10.1016/j.antiviral.2016.06.001	WHO human NAI	Origin of virus: surveillance studies/clinical detection
+G00068	zanamivir	(M00033 AND M00034)	normal inhibition	7	doi:10.1016/j.antiviral.2016.06.001	WHO human NAI	Origin of virus: surveillance studies/clinical detection | IC50 fold-change in source: 3–7
+G00069	laninamivir	(M00035 AND M00036)	normal inhibition	9	doi:10.1111/irv.12215,doi:10.1128/aac.02556-13	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 7–9
+G00070	oseltamivir	(M00035 AND M00036)	reduced inhibition	40	doi:10.1111/irv.12215,doi:10.1128/aac.02556-13	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 31–40
+G00071	peramivir	(M00035 AND M00036)	normal inhibition	2	doi:10.1111/irv.12215,doi:10.1128/aac.02556-13	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 1–2
+G00072	zanamivir	(M00035 AND M00036)	highly reduced inhibition	235	doi:10.1111/irv.12215,doi:10.1128/aac.02556-13	WHO human NAI	Origin of virus: surveillance studies; reverse genetics | IC50 fold-change in source: 66–235
+G00073	laninamivir	(M00037 AND M00038)	normal inhibition	9	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: surveillance studies
+G00074	oseltamivir	(M00037 AND M00038)	reduced inhibition	87	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: surveillance studies
+G00075	peramivir	(M00037 AND M00038)	reduced inhibition	16	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: surveillance studies
+G00076	zanamivir	(M00037 AND M00038)	reduced inhibition	32	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: surveillance studies
+G00077	laninamivir	(M00039 AND M00040)	normal inhibition	4	doi:10.1038/s41598-021-95771-4	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00078	oseltamivir	(M00039 AND M00040)	highly reduced inhibition	306	doi:10.1038/s41598-021-95771-4	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00079	peramivir	(M00039 AND M00040)	normal inhibition	2	doi:10.1038/s41598-021-95771-4	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00080	zanamivir	(M00039 AND M00040)	normal inhibition	8	doi:10.1038/s41598-021-95771-4	WHO human NAI,WHO avian NAI	Origin of virus (WHO human NAI): reverse genetics | Origin of virus (WHO avian NAI): reverse genetics
+G00081	oseltamivir	(M00041 AND M00042)	normal inhibition	7	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00082	oseltamivir	(M00043 AND M00042)	reduced inhibition	20	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00083	oseltamivir	(M00041 AND M00044)	highly reduced inhibition	683	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00084	oseltamivir	(M00043 AND M00044)	highly reduced inhibition	395	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00085	oseltamivir	(M00041 AND M00045)	reduced inhibition	60	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00086	oseltamivir	(M00043 AND M00045)	reduced inhibition	52	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00087	oseltamivir	(M00041 AND M00045 AND M00044)	highly reduced inhibition	336	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00088	oseltamivir	(M00043 AND M00045 AND M00044)	highly reduced inhibition	121	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00089	zanamivir	(M00041 AND M00042)	highly reduced inhibition	391	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00090	zanamivir	(M00043 AND M00042)	highly reduced inhibition	181	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00091	zanamivir	(M00041 AND M00044)	normal inhibition	1	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00092	zanamivir	(M00043 AND M00044)	normal inhibition	1	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00093	zanamivir	(M00041 AND M00045)	normal inhibition	1	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00094	zanamivir	(M00043 AND M00045)	normal inhibition	4	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00095	zanamivir	(M00041 AND M00045 AND M00044)	reduced inhibition	12	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00096	zanamivir	(M00043 AND M00045 AND M00044)	reduced inhibition	11	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00097	laninamivir	(M00046 AND M00044)	highly reduced inhibition	366	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv288	WHO human NAI	Origin of virus: reverse genetics
+G00098	laninamivir	(M00047 AND M00044)	highly reduced inhibition	650	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv245	WHO human NAI	Origin of virus: clinical detection/zanamivir used; surveillance studies; reverse genetics
+G00099	oseltamivir	(M00048 AND M00044)	highly reduced inhibition	1173	doi:10.1128/jvi.02485-14	WHO human NAI	Origin of virus: reverse genetics
+G00100	oseltamivir	(M00046 AND M00044)	highly reduced inhibition	3381	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv288	WHO human NAI	Origin of virus: reverse genetics | IC50 fold-change in source: 790–3381
+G00101	oseltamivir	(M00047 AND M00044)	highly reduced inhibition	2483	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv245	WHO human NAI	Origin of virus: clinical detection/zanamivir used; surveillance studies; reverse genetics | IC50 fold-change in source: 225–2483
+G00102	oseltamivir	(M00042 AND M00044)	reduced inhibition	21	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00103	peramivir	(M00048 AND M00044)	normal inhibition	3	doi:10.1128/jvi.02485-14	WHO human NAI	Origin of virus: reverse genetics
+G00104	peramivir	(M00046 AND M00044)	highly reduced inhibition	33333	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv288	WHO human NAI	Origin of virus: reverse genetics | IC50 fold-change in source: 5958–33333
+G00105	peramivir	(M00047 AND M00044)	highly reduced inhibition	93433	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv245	WHO human NAI	Origin of virus: clinical detection/zanamivir used; surveillance studies; reverse genetics | IC50 fold-change in source: 3333–93433
+G00106	zanamivir	(M00048 AND M00044)	reduced inhibition	56	doi:10.1128/jvi.02485-14	WHO human NAI	Origin of virus: reverse genetics
+G00107	zanamivir	(M00046 AND M00044)	highly reduced inhibition	903	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv288	WHO human NAI	Origin of virus: reverse genetics | IC50 fold-change in source: 136–903
+G00108	zanamivir	(M00047 AND M00044)	highly reduced inhibition	1546	doi:10.1128/jvi.02485-14,doi:10.1093/infdis/jiv245	WHO human NAI	Origin of virus: clinical detection/zanamivir used; surveillance studies; reverse genetics | IC50 fold-change in source: 225–1546
+G00109	zanamivir	(M00042 AND M00044)	highly reduced inhibition	132	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00110	oseltamivir	(M00049 AND M00050)	normal inhibition	1	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00111	oseltamivir	(M00049 AND M00044)	highly reduced inhibition	198	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00112	oseltamivir	(M00049 AND M00051 AND M00044)	highly reduced inhibition	356	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00113	peramivir	(M00049 AND M00050)	reduced inhibition	18	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00114	peramivir	(M00049 AND M00044)	highly reduced inhibition	1805	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00115	peramivir	(M00049 AND M00051 AND M00044)	highly reduced inhibition	2300	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00116	zanamivir	(M00049 AND M00050)	reduced inhibition	25	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00117	zanamivir	(M00049 AND M00044)	reduced inhibition	15	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00118	zanamivir	(M00049 AND M00051 AND M00044)	normal inhibition	4	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00119	laninamivir	(M00052 AND M00044)	normal inhibition	1	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: clinical detection/laninamivir used+peramivir used
+G00120	oseltamivir	(M00052 AND M00044)	highly reduced inhibition	2649	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: clinical detection/laninamivir used+peramivir used
+G00121	peramivir	(M00052 AND M00044)	highly reduced inhibition	1427	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: clinical detection/laninamivir used+peramivir used
+G00122	zanamivir	(M00052 AND M00044)	normal inhibition	5	doi:10.1016/j.antiviral.2017.08.004	WHO human NAI	Origin of virus: clinical detection/laninamivir used+peramivir used
+G00123	oseltamivir	((M00050 OR M00051) AND M00044)	highly reduced inhibition	799	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies | IC50 fold-change in source: 231–799
+G00124	oseltamivir	(M00053 AND M00044)	highly reduced inhibition	1189	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00125	peramivir	((M00050 OR M00051) AND M00044)	highly reduced inhibition	718	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies | IC50 fold-change in source: 80–718
+G00126	peramivir	(M00053 AND M00044)	highly reduced inhibition	1161	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00127	zanamivir	((M00050 OR M00051) AND M00044)	normal inhibition	3	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies | IC50 fold-change in source: 1–3
+G00128	zanamivir	(M00053 AND M00044)	reduced inhibition	14	doi:10.1016/j.antiviral.2009.11.005	WHO human NAI	Origin of virus: surveillance studies
+G00129	oseltamivir	(M00054 AND M00044)	highly reduced inhibition	744	doi:10.1111/irv.12113,doi:10.1093/infdis/jiq040	WHO human NAI	Origin of virus: surveillance studies; clinical detection/oseltamivir used | IC50 fold-change in source: 318–744
+G00130	peramivir	(M00054 AND M00044)	highly reduced inhibition	108	doi:10.1111/irv.12113,doi:10.1093/infdis/jiq040	WHO human NAI	Origin of virus: surveillance studies; clinical detection/oseltamivir used
+G00131	zanamivir	(M00054 AND M00044)	normal inhibition	3	doi:10.1111/irv.12113,doi:10.1093/infdis/jiq040	WHO human NAI	Origin of virus: surveillance studies; clinical detection/oseltamivir used | IC50 fold-change in source: 2–3
+G00132	laninamivir	(M00055 AND M00056)	normal inhibition	3	doi:10.3201/eid3007.240480,doi:10.1016/s2666-5247(24)00037-5	WHO human NAI	Origin of virus: clinical detection/surveillance studies
+G00133	laninamivir	(M00057 AND M00044)	reduced inhibition	11	doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: surveillance studies; in vitro
+G00134	laninamivir	(M00058 AND M00044)	reduced inhibition	17	doi:10.1086/656439,doi:10.1128/aac.05994-11,doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics
+G00135	oseltamivir	(M00055 AND M00056)	reduced inhibition	16	doi:10.3201/eid3007.240480,doi:10.1016/s2666-5247(24)00037-5	WHO human NAI	Origin of virus: clinical detection/surveillance studies | IC50 fold-change in source: 11–16
+G00136	oseltamivir	(M00057 AND M00044)	highly reduced inhibition	10822	doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: surveillance studies; in vitro | IC50 fold-change in source: >10822
+G00137	oseltamivir	(M00058 AND M00044)	highly reduced inhibition	9100	doi:10.1086/656439,doi:10.1128/aac.05994-11,doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics | IC50 fold-change in source: >9100
+G00138	oseltamivir	(M00055 AND M00044)	highly reduced inhibition	1733	doi:10.1093/infdis/jiq010,doi:10.1016/j.phrp.2013.10.005,doi:10.1128/aac.00334-09	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics | reference reference 39 unresolved unresolved (WHO human NAI) | Origin of virus: reverse genetics; in vitro/zanamivir used | IC50 fold-change in source: 584–971 | Fold-change values in source: 971, 1733
+G00139	oseltamivir	(M00059 AND M00044)	highly reduced inhibition	1943	doi:10.1128/aac.00334-09	WHO human NAI	Origin of virus: reverse genetics; in vitro/zanamivir used
+G00140	oseltamivir	(M00055 AND M00045)	reduced inhibition	97	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00141	oseltamivir	(M00055 AND M00045 AND M00044)	highly reduced inhibition	300	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00142	peramivir	(M00055 AND M00056)	normal inhibition	4	doi:10.3201/eid3007.240480,doi:10.1016/s2666-5247(24)00037-5	WHO human NAI	Origin of virus: clinical detection/surveillance studies
+G00143	peramivir	(M00057 AND M00044)	highly reduced inhibition	5343	doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: surveillance studies; in vitro
+G00144	peramivir	(M00058 AND M00044)	highly reduced inhibition	7500	doi:10.1086/656439,doi:10.1128/aac.05994-11,doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics | IC50 fold-change in source: >7500
+G00145	peramivir	(M00055 AND M00044)	highly reduced inhibition	1331	doi:10.1093/infdis/jiq010,doi:10.1016/j.phrp.2013.10.005,doi:10.1128/aac.00334-09	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics | reference reference 39 unresolved unresolved (WHO human NAI) | Origin of virus: reverse genetics; in vitro/zanamivir used | Fold-change values in source: 893, 1331
+G00146	peramivir	(M00059 AND M00044)	highly reduced inhibition	400	doi:10.1128/aac.00334-09	WHO human NAI	Origin of virus: reverse genetics; in vitro/zanamivir used
+G00147	zanamivir	(M00055 AND M00056)	normal inhibition	3	doi:10.3201/eid3007.240480,doi:10.1016/s2666-5247(24)00037-5	WHO human NAI	Origin of virus: clinical detection/surveillance studies
+G00148	zanamivir	(M00057 AND M00044)	reduced inhibition	11	doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: surveillance studies; in vitro
+G00149	zanamivir	(M00058 AND M00044)	reduced inhibition	27	doi:10.1086/656439,doi:10.1128/aac.05994-11,doi:10.1016/j.antiviral.2012.01.006	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics | IC50 fold-change in source: 22–27
+G00150	zanamivir	(M00055 AND M00044)	normal inhibition	2	doi:10.1093/infdis/jiq010,doi:10.1016/j.phrp.2013.10.005,doi:10.1128/aac.00334-09	WHO human NAI	Origin of virus: clinical detection/oseltamivir used; reverse genetics | reference reference 39 unresolved unresolved (WHO human NAI) | Origin of virus: reverse genetics; in vitro/zanamivir used | IC50 fold-change in source: 1–2
+G00151	zanamivir	(M00059 AND M00044)	normal inhibition	1	doi:10.1128/aac.00334-09	WHO human NAI	Origin of virus: reverse genetics; in vitro/zanamivir used
+G00152	zanamivir	(M00055 AND M00045)	normal inhibition	2	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00153	zanamivir	(M00055 AND M00045 AND M00044)	reduced inhibition	13	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00154	oseltamivir	(M00056 AND M00044)	highly reduced inhibition	5880	doi:10.2807/ese.16.23.19884-en	WHO human NAI	Origin of virus: surveillance studies
+G00155	peramivir	(M00056 AND M00044)	highly reduced inhibition	334	doi:10.2807/ese.16.23.19884-en	WHO human NAI	Origin of virus: surveillance studies
+G00156	zanamivir	(M00056 AND M00044)	normal inhibition	5	doi:10.2807/ese.16.23.19884-en	WHO human NAI	Origin of virus: surveillance studies
+G00157	laninamivir	(M00044 AND M00060)	reduced inhibition	22	doi:10.1099/jgv.0.001029	WHO human NAI	Origin of virus: reverse genetics
+G00158	oseltamivir	(M00044 AND M00060)	highly reduced inhibition	4811	doi:10.1099/jgv.0.001029	WHO human NAI	Origin of virus: reverse genetics
+G00159	oseltamivir	(M00061 AND M00044)	highly reduced inhibition	207	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00160	oseltamivir	(M00045 AND M00044)	highly reduced inhibition	108	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00161	oseltamivir	(M00062 AND M00044)	highly reduced inhibition	415	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00162	peramivir	(M00044 AND M00060)	highly reduced inhibition	10460	doi:10.1099/jgv.0.001029	WHO human NAI	Origin of virus: reverse genetics
+G00163	zanamivir	(M00044 AND M00060)	reduced inhibition	36	doi:10.1099/jgv.0.001029	WHO human NAI	Origin of virus: reverse genetics
+G00164	zanamivir	(M00061 AND M00044)	normal inhibition	1	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00165	zanamivir	(M00045 AND M00044)	normal inhibition	1	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00166	zanamivir	(M00062 AND M00044)	normal inhibition	1	doi:10.1016/j.phrp.2013.10.005	WHO human NAI	Origin of virus: reverse genetics
+G00167	oseltamivir	(M00063 AND M00064)	reduced inhibition	43	doi:10.1016/j.antiviral.2009.11.005,doi:10.1016/s1473-3099(11)70318-8	WHO human NAI	Origin of virus: surveillance studies | IC50 fold-change in source: 10–43
+G00168	peramivir	(M00063 AND M00064)	normal inhibition	4	doi:10.1016/j.antiviral.2009.11.005,doi:10.1016/s1473-3099(11)70318-8	WHO human NAI	Origin of virus: surveillance studies
+G00169	zanamivir	(M00063 AND M00064)	reduced inhibition	20	doi:10.1016/j.antiviral.2009.11.005,doi:10.1016/s1473-3099(11)70318-8	WHO human NAI	Origin of virus: surveillance studies | IC50 fold-change in source: 3–20

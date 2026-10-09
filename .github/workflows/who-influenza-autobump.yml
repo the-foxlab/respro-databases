@@ -1,0 +1,159 @@
+name: WHO Influenza Autobump
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 3 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  OUTPUT_DIR: databases/WHO_Influenza/output
+  SOURCE_DIR: /tmp/who_source
+  LOOKUP_FILE: databases/WHO_Influenza/scripts/reference-lookup.tsv
+
+jobs:
+  update-who-influenza:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download upstream source PDFs
+        run: |
+          set -euo pipefail
+          mkdir -p "${SOURCE_DIR}"
+          curl -fsSL -o "${SOURCE_DIR}/human-nai-marker-table.pdf" \
+            "https://cdn.who.int/media/docs/default-source/influenza/laboratory---network/quality-assurance/human-nai-marker-table.pdf"
+          curl -fsSL -o "${SOURCE_DIR}/avian-nai-marker-table.pdf" \
+            "https://cdn.who.int/media/docs/default-source/influenza/avwg/avian-nai-marker-who-table.pdf"
+          curl -fsSL -o "${SOURCE_DIR}/pa-marker-table.pdf" \
+            "https://cdn.who.int/media/docs/default-source/influenza/laboratory---network/quality-assurance/antiviral-susceptibility-influenza/pa-marker-who-table_28-11-2025_updated.pdf"
+          ls -l "${SOURCE_DIR}"
+
+      - name: Compare with current tracked source state
+        id: update_check
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import sys
+
+          source_dir = os.environ["SOURCE_DIR"]
+          state_path = os.path.join(
+              os.environ["OUTPUT_DIR"], "source-state.json")
+
+          current = {}
+          if os.path.exists(state_path):
+              with open(state_path, "r", encoding="utf-8") as fh:
+                  current = json.load(fh).get("sources", {})
+          else:
+              print("Note: source-state.json does not exist (first run?)",
+                    file=sys.stderr)
+
+          latest = {}
+          for name, filename in [
+              ("human-nai", "human-nai-marker-table.pdf"),
+              ("avian-nai", "avian-nai-marker-table.pdf"),
+              ("pa", "pa-marker-table.pdf"),
+          ]:
+              path = os.path.join(source_dir, filename)
+              digest = hashlib.sha256(open(path, "rb").read()).hexdigest()
+              latest[name] = {"sha256": f"sha256:{digest}"}
+
+          changed = [
+              name for name in latest
+              if current.get(name, {}).get("sha256") != latest[name]["sha256"]
+          ]
+          print(f"Changed sources: {changed or 'none'}", file=sys.stderr)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+              fh.write(f"should_update={'true' if changed else 'false'}\n")
+          PY
+
+      - name: Install converter dependencies
+        if: steps.update_check.outputs.should_update == 'true'
+        run: |
+          set -euo pipefail
+          pip install -r databases/WHO_Influenza/scripts/requirements.txt
+
+      - name: Resolve citation DOIs
+        if: steps.update_check.outputs.should_update == 'true'
+        run: |
+          set -euo pipefail
+          python databases/WHO_Influenza/scripts/resolve_references.py \
+            --source-dir "${SOURCE_DIR}" \
+            --lookup-file "${LOOKUP_FILE}" \
+            --delay 0.5
+
+      - name: Run converter
+        if: steps.update_check.outputs.should_update == 'true'
+        run: |
+          set -euo pipefail
+          python databases/WHO_Influenza/scripts/convert.py \
+            --source-dir "${SOURCE_DIR}" \
+            --lookup-file "${LOOKUP_FILE}" \
+            --output-dir "${OUTPUT_DIR}"
+
+      - name: Build global metadata manifest
+        if: steps.update_check.outputs.should_update == 'true'
+        run: |
+          python scripts/build_metadata_manifest.py
+
+      - name: respro build QC
+        id: qc
+        if: steps.update_check.outputs.should_update == 'true'
+        uses: ./.github/actions/respro-build-qc
+        with:
+          source-name: WHO_Influenza
+          output-dir: databases/WHO_Influenza/output
+          work-dir: /tmp/respro_qc
+
+      - name: No update detected
+        if: steps.update_check.outputs.should_update != 'true'
+        run: |
+          echo "No new upstream source detected; skipping converter and PR creation."
+
+      - name: Create pull request
+        if: steps.update_check.outputs.should_update == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: autobump/who-influenza
+          delete-branch: true
+          commit-message: "chore(WHO_Influenza): autobump source outputs"
+          title: "chore: autobump WHO Influenza outputs"
+          body: |
+            Automated monthly update for the WHO influenza marker tables.
+
+            - Human NAI table: https://cdn.who.int/media/docs/default-source/influenza/laboratory---network/quality-assurance/human-nai-marker-table.pdf
+            - Avian NAI table: https://cdn.who.int/media/docs/default-source/influenza/avwg/avian-nai-marker-who-table.pdf
+            - PA (baloxavir) table: https://cdn.who.int/media/docs/default-source/influenza/laboratory---network/quality-assurance/antiviral-susceptibility-influenza/pa-marker-who-table_28-11-2025_updated.pdf
+
+            ${{ steps.qc.outputs.summary }}
+
+            This PR was generated by the autobump workflow.
+          labels: autobump
+          add-paths: |
+            databases/WHO_Influenza/output/rules.tsv
+            databases/WHO_Influenza/output/formula-rules.tsv
+            databases/WHO_Influenza/output/metadata.json
+            databases/WHO_Influenza/output/non-migrated-rules.txt
+            databases/WHO_Influenza/output/source-state.json
+            databases/WHO_Influenza/scripts/reference-lookup.tsv
+            databases/manifest.json
+
+      - name: Mark workflow failed on respro build error
+        if: steps.update_check.outputs.should_update == 'true' && steps.qc.outputs.qc_failed == 'true'
+        run: |
+          echo "respro build QC failed for WHO_Influenza; see the PR body and the 'respro build QC' step log."
+          exit 1
