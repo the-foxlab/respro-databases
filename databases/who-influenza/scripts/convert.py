@@ -11,7 +11,7 @@ Pipeline:
 2. Normalize substitutions, phenotypes, and fold-changes.
 3. Validate every position against the pinned reference CDS translations in
    scripts/references/ (fail-closed: mismatches go to non-migrated-rules.txt).
-4. Deduplicate and merge rules across tables by
+4. Deduplicate and merge rules across tables and subtypes by
    (feature, reference_identifier, position, reference, mutation, antiviral):
    publications join with ",", fold_ic50 keeps the max endpoint, the more
    severe phenotype wins, disagreements and all distinct fold values are kept
@@ -412,6 +412,40 @@ class RuleRegistry:
                    mutation: str, antiviral: str) -> tuple:
         return (feature, ref_id, position, reference, mutation, antiviral)
 
+    @staticmethod
+    def _record_observation(
+        entry: dict,
+        phenotype: str,
+        fold_ic50: str,
+        fold_note: str,
+        publication: str,
+        source: str,
+        subtype: str,
+        comments: list[str],
+    ) -> None:
+        fold_value = None
+        if fold_ic50:
+            try:
+                fold_value = float(fold_ic50)
+            except ValueError:
+                pass
+            else:
+                entry["folds"].append(fold_value)
+        if phenotype:
+            entry["phenotypes"].append(phenotype)
+        if publication:
+            entry["publications"].append(publication)
+        if source:
+            entry["sources"].append(source)
+        entry["observations"].append({
+            "phenotype": phenotype,
+            "fold_value": fold_value,
+            "fold_note": fold_note,
+            "source": source,
+            "subtype": subtype,
+            "comments": list(comments),
+        })
+
     def add_atomic(
         self,
         feature: str,
@@ -426,6 +460,8 @@ class RuleRegistry:
         publication: str,
         source: str,
         comments: list[str],
+        *,
+        subtype: str,
     ) -> None:
         key = self.atomic_key(feature, ref_id, position, reference, mutation,
                               antiviral)
@@ -438,25 +474,14 @@ class RuleRegistry:
             "antiviral": antiviral,
             "phenotypes": [],
             "folds": [],
-            "fold_notes": [],
             "publications": [],
             "sources": [],
-            "comments": [],
+            "observations": [],
         })
-        if phenotype:
-            entry["phenotypes"].append(phenotype)
-        if fold_ic50:
-            try:
-                entry["folds"].append(float(fold_ic50))
-            except ValueError:
-                pass
-        if fold_note:
-            entry["fold_notes"].append(fold_note)
-        if publication:
-            entry["publications"].append(publication)
-        if source:
-            entry["sources"].append(source)
-        entry["comments"].extend(c for c in comments if c)
+        self._record_observation(
+            entry, phenotype, fold_ic50, fold_note, publication, source,
+            subtype, comments,
+        )
 
     def add_combo(
         self,
@@ -471,6 +496,8 @@ class RuleRegistry:
         source: str,
         comments: list[str],
         components: list[dict],
+        *,
+        subtype: str,
     ) -> None:
         key = (feature, ref_id, member_keys, antiviral)
         entry = self.combos.setdefault(key, {
@@ -481,25 +508,14 @@ class RuleRegistry:
             "components": components,
             "phenotypes": [],
             "folds": [],
-            "fold_notes": [],
             "publications": [],
             "sources": [],
-            "comments": [],
+            "observations": [],
         })
-        if phenotype:
-            entry["phenotypes"].append(phenotype)
-        if fold_ic50:
-            try:
-                entry["folds"].append(float(fold_ic50))
-            except ValueError:
-                pass
-        if fold_note:
-            entry["fold_notes"].append(fold_note)
-        if publication:
-            entry["publications"].append(publication)
-        if source:
-            entry["sources"].append(source)
-        entry["comments"].extend(c for c in comments if c)
+        self._record_observation(
+            entry, phenotype, fold_ic50, fold_note, publication, source,
+            subtype, comments,
+        )
 
     def member_id_for(self, member_key: tuple) -> str:
         """Return the member_id for a component, creating one if needed."""
@@ -539,24 +555,173 @@ def build_comment(parts: list[str]) -> str:
     return " | ".join(p for p in parts if p)
 
 
-SOURCE_TAG_RE = re.compile(
-    r" \((WHO human NAI|WHO avian NAI|WHO PA)\)(?=:)"
-)
+def format_evidence_values(
+    records: list[dict],
+) -> tuple[list[tuple[str, str]], bool]:
+    """Deduplicate evidence text and qualify only cross-source disagreements."""
+    values = list(dict.fromkeys(record["value"] for record in records))
+    sources = list(dict.fromkeys(
+        record["observation"]["source"]
+        for record in records
+        if record["observation"]["source"]
+    ))
+    subtypes = list(dict.fromkeys(
+        record["observation"]["subtype"]
+        for record in records
+        if record["observation"]["subtype"]
+    ))
+    qualify = len(values) > 1 and (len(sources) > 1 or len(subtypes) > 1)
+    if not qualify:
+        return [(value, "") for value in values], False
+
+    formatted_values = []
+    for value in values:
+        matching = [
+            record["observation"]
+            for record in records
+            if record["value"] == value
+        ]
+        labels = []
+        for observation in matching:
+            label_parts = []
+            if len(sources) > 1 and observation["source"]:
+                label_parts.append(observation["source"])
+            if len(subtypes) > 1 and observation["subtype"]:
+                label_parts.append(observation["subtype"])
+            label = " / ".join(label_parts)
+            if label and label not in labels:
+                labels.append(label)
+        formatted_values.append((value, ", ".join(labels)))
+    return formatted_values, True
 
 
 def finalize_comment_parts(
-    comments: list[str], sources: list[str]
+    observations: list[dict],
+    phenotype: str,
+    phenotype_note: str,
+    fold_note: str,
 ) -> list[str]:
-    """Deduplicate comments and drop redundant source tags.
+    """Merge evidence comments, adding provenance only for conflicting sources."""
+    origins = []
+    other_comments = []
+    fold_notes: dict[str, list[dict]] = {}
+    for observation in observations:
+        for comment in observation["comments"]:
+            if comment.startswith("Origin of virus: "):
+                origins.append({
+                    "value": comment.removeprefix("Origin of virus: "),
+                    "observation": observation,
+                })
+            else:
+                other_comments.append({
+                    "value": comment,
+                    "observation": observation,
+                })
+        if observation["fold_note"]:
+            match = re.match(
+                r"^((?:IC50|EC50) fold-change in source: )(.*)$",
+                observation["fold_note"],
+            )
+            if match:
+                prefix, value = match.groups()
+            else:
+                prefix, value = "", observation["fold_note"]
+            fold_notes.setdefault(prefix, []).append({
+                "value": value,
+                "observation": observation,
+            })
 
-    Comments are tagged with their source label at parse time so that rules
-    merged from several tables show which table each block came from. When a
-    rule draws from a single table the tag is redundant (the source column
-    already says so) and is stripped.
-    """
-    parts = list(dict.fromkeys(comments))
-    if len(set(sources)) <= 1:
-        parts = [SOURCE_TAG_RE.sub("", p) for p in parts]
+    parts = []
+    if origins:
+        values, qualified = format_evidence_values(origins)
+        if qualified:
+            parts.extend(
+                f"Origin of virus ({label}): {value}"
+                if label else f"Origin of virus: {value}"
+                for value, label in values
+            )
+        else:
+            parts.extend(f"Origin of virus: {value}" for value, _ in values)
+
+    comments, qualified = format_evidence_values(other_comments)
+    if qualified:
+        parts.extend(
+            f"{value} ({label})" if label else value
+            for value, label in comments
+        )
+    else:
+        parts.extend(value for value, _ in comments)
+
+    for prefix, records in fold_notes.items():
+        values, qualified = format_evidence_values(records)
+        if qualified:
+            title = prefix.rstrip(": ")
+            parts.extend(
+                f"{title} ({label}): {value}" if label
+                else f"{prefix}{value}"
+                for value, label in values
+            )
+        else:
+            parts.extend(prefix + value for value, _ in values)
+
+    if phenotype_note:
+        phenotypes = sorted({
+            observation["phenotype"]
+            for observation in observations
+            if observation["phenotype"]
+        })
+        records = [
+            {"value": value, "observation": observation}
+            for value in phenotypes
+            for observation in observations
+            if observation["phenotype"] == value
+        ]
+        values, _ = format_evidence_values(records)
+        parts.append(
+            "Phenotypes in source: " + ", ".join(
+                f"{value} ({label})" if label else value
+                for value, label in values
+            )
+            + f" (most severe used: {phenotype})"
+        )
+
+    if fold_note:
+        fold_values = sorted({
+            observation["fold_value"]
+            for observation in observations
+            if observation["fold_value"] is not None
+        })
+        fold_note_values = {
+            observation["fold_value"]
+            for observation in observations
+            if observation["fold_value"] is not None
+            and observation["fold_note"]
+        }
+        uncovered_values = [
+            value for value in fold_values if value not in fold_note_values
+        ]
+        records = [
+            {
+                "value": f"{value:.10g}",
+                "observation": observation,
+            }
+            for value in uncovered_values
+            for observation in observations
+            if observation["fold_value"] == value
+        ]
+        if records:
+            values, qualified = format_evidence_values(records)
+            if qualified:
+                parts.extend(
+                    f"Fold-change values in source ({label}): {value}"
+                    if label else f"Fold-change values in source: {value}"
+                    for value, label in values
+                )
+            else:
+                parts.append(
+                    "Fold-change values in source: "
+                    + ", ".join(value for value, _ in values)
+                )
     return parts
 
 
@@ -779,18 +944,13 @@ def process_table(
         )
 
         # The free-text comments column is deliberately not imported; only
-        # the structured origin column (its original heading) is kept. Every
-        # per-source comment carries its source label so that merged rows
-        # (rules imported from more than one table) show which table each
-        # block came from.
+        # the structured origin column is retained.
+        source = SOURCE_LABELS[table]
         comments = []
         origin = expand_origin(" ".join(row.origin.split()), table)
         if origin:
-            comments.append(f"Origin of virus ({SOURCE_LABELS[table]}): " + origin)
-        comments.extend(
-            f"reference {n} unresolved ({SOURCE_LABELS[table]})"
-            for n in unresolved_notes
-        )
+            comments.append(f"Origin of virus: {origin}")
+        comments.extend(unresolved_notes)
 
         if table == "pa":
             drug, _, phenotype, fold_ic50, fold_note = drug_values[0]
@@ -812,7 +972,7 @@ def process_table(
                 registry.add_atomic(
                     feature, ref_id, comp["position"], comp["reference"],
                     comp["mutation"], drug, phenotype, fold_ic50, fold_note,
-                    publication, SOURCE_LABELS[table], comments,
+                    publication, source, comments, subtype=subtype,
                 )
             continue
 
@@ -837,8 +997,8 @@ def process_table(
                 continue
             registry.add_combo(
                 feature, ref_id, member_keys, drug, phenotype, fold_ic50,
-                fold_note, publication, SOURCE_LABELS[table], comments,
-                combo_components,
+                fold_note, publication, source, comments, combo_components,
+                subtype=subtype,
             )
 
 
@@ -856,13 +1016,8 @@ def finalize_rules(
         phenotype, pheno_note = merge_phenotype(entry["phenotypes"])
         fold_ic50, fold_note = merge_fold(entry["folds"])
         comment_parts = finalize_comment_parts(
-            entry["comments"], entry["sources"]
+            entry["observations"], phenotype, pheno_note, fold_note
         )
-        comment_parts.extend(dict.fromkeys(entry["fold_notes"]))
-        if pheno_note:
-            comment_parts.append(pheno_note)
-        if fold_note:
-            comment_parts.append(fold_note)
         row = {
             "feature": entry["feature"],
             "reference_identifier": entry["reference_identifier"],
@@ -918,10 +1073,9 @@ def finalize_rules(
                         "antiviral": "",
                         "phenotypes": [],
                         "folds": [],
-                        "fold_notes": [],
                         "publications": list(entry["publications"]),
                         "sources": list(entry["sources"]),
-                        "comments": [],
+                        "observations": [],
                         "member_id": member_id,
                     }
             member_ids.append(member_id)
@@ -934,13 +1088,8 @@ def finalize_rules(
         phenotype, pheno_note = merge_phenotype(entry["phenotypes"])
         fold_ic50, fold_note = merge_fold(entry["folds"])
         comment_parts = finalize_comment_parts(
-            entry["comments"], entry["sources"]
+            entry["observations"], phenotype, pheno_note, fold_note
         )
-        comment_parts.extend(dict.fromkeys(entry["fold_notes"]))
-        if pheno_note:
-            comment_parts.append(pheno_note)
-        if fold_note:
-            comment_parts.append(fold_note)
 
         formula_rows.append({
             "group_id": group_id,
