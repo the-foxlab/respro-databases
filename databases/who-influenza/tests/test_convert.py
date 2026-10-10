@@ -336,9 +336,11 @@ class TestRuleRegistryDedup:
     def test_identical_rules_deduplicate(self):
         registry = self.make_registry()
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
-                            "hri", 138, "", "doi:10.1/a", "WHO human NAI", [])
+                            "hri", 138, "", "doi:10.1/a", "WHO human NAI", [],
+                            subtype="A(H5N1)")
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
-                            "ri", 14, "", "doi:10.1/b", "WHO avian NAI", [])
+                            "ri", 14, "", "doi:10.1/b", "WHO avian NAI", [],
+                            subtype="A(H5N1)")
         rules, formulas = convert.finalize_rules(registry)
         assert len(rules) == 1
         assert len(formulas) == 0
@@ -349,15 +351,60 @@ class TestRuleRegistryDedup:
         assert row["source"] == "WHO human NAI,WHO avian NAI"
         assert "Phenotypes in source" in row["comment"]
         assert "Fold-change values in source" in row["comment"]
+        assert "Fold-change values in source (WHO avian NAI): 14" in row["comment"]
+        assert "Fold-change values in source (WHO human NAI): 138" in row["comment"]
+
+    def test_process_table_merges_subtypes_and_qualifies_conflicting_evidence(self):
+        registry = self.make_registry()
+        sequences = {"NC_026434": "A" * 274 + "H" + "A" * 100}
+        non_migrated = []
+        for subtype, fold_range in [
+            ("A(H1N1)", "221–2846"),
+            ("A(H1N1)pdm09", "321–2597"),
+        ]:
+            parsed = who_parsers.ParsedTable(
+                footer_date="2026-01-01",
+                rows=[
+                    who_parsers.MarkerRow(
+                        page=1,
+                        subtype=subtype,
+                        substitution="H275Y",
+                        oseltamivir=f"HRI ({fold_range})",
+                        origin=(
+                            "Sur; RG" if subtype == "A(H1N1)"
+                            else "Clin/Ose, Clin/Sur; in vitro"
+                        ),
+                    )
+                ],
+            )
+            convert.process_table(
+                "human-nai", parsed, {}, sequences, registry, non_migrated
+            )
+
+        rules, _ = convert.finalize_rules(registry)
+
+        assert non_migrated == []
+        assert len(rules) == 1
+        assert rules[0]["source"] == "WHO human NAI"
+        assert rules[0]["fold_ic50"] == "2846"
+        assert rules[0]["comment"] == (
+            "Origin of virus (A(H1N1)): surveillance studies; reverse genetics | "
+            "Origin of virus (A(H1N1)pdm09): clinical detection/oseltamivir used, "
+            "clinical detection/surveillance studies; in vitro | "
+            "IC50 fold-change in source (A(H1N1)): 221–2846 | "
+            "IC50 fold-change in source (A(H1N1)pdm09): 321–2597"
+        )
 
     def test_merged_origin_comments_carry_source_labels(self):
         registry = self.make_registry()
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
                             "hri", 138, "", "doi:10.1/a", "WHO human NAI",
-                            ["Origin of virus (WHO human NAI): surveillance studies"])
+                            ["Origin of virus: surveillance studies"],
+                            subtype="H5N1")
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
                             "hri", 138, "", "doi:10.1/b", "WHO avian NAI",
-                            ["Origin of virus (WHO avian NAI): reverse genetics"])
+                            ["Origin of virus: reverse genetics"],
+                            subtype="H5N1")
         rules, _ = convert.finalize_rules(registry)
         assert len(rules) == 1
         assert rules[0]["comment"] == (
@@ -369,8 +416,9 @@ class TestRuleRegistryDedup:
         registry = self.make_registry()
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
                             "hri", 138, "", "doi:10.1/a", "WHO avian NAI",
-                            ["Origin of virus (WHO avian NAI): in vitro; "
-                             "reverse genetics/zanamivir used"])
+                            ["Origin of virus: in vitro; "
+                             "reverse genetics/zanamivir used"],
+                            subtype="H5N1")
         rules, _ = convert.finalize_rules(registry)
         assert len(rules) == 1
         assert rules[0]["comment"] == (
@@ -379,31 +427,51 @@ class TestRuleRegistryDedup:
 
     def test_identical_origin_from_same_source_deduplicates(self):
         registry = self.make_registry()
-        comment = "Origin of virus (WHO avian NAI): reverse genetics"
+        comment = "Origin of virus: reverse genetics"
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
                             "hri", 138, "", "doi:10.1/a", "WHO avian NAI",
-                            [comment])
+                            [comment], subtype="H5N1")
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
                             "hri", 138, "", "doi:10.1/b", "WHO avian NAI",
-                            [comment])
+                            [comment], subtype="H5N1")
         rules, _ = convert.finalize_rules(registry)
         assert len(rules) == 1
         assert rules[0]["comment"] == "Origin of virus: reverse genetics"
+
+    def test_identical_origin_across_sources_stays_unqualified(self):
+        registry = self.make_registry()
+        comment = "Origin of virus: reverse genetics"
+        registry.add_atomic(
+            "NA", "EF619973", 255, "H", "Y", "oseltamivir",
+            "hri", 138, "", "doi:10.1/a", "WHO human NAI", [comment],
+            subtype="H5N1",
+        )
+        registry.add_atomic(
+            "NA", "EF619973", 255, "H", "Y", "oseltamivir",
+            "hri", 138, "", "doi:10.1/b", "WHO avian NAI", [comment],
+            subtype="H5N1",
+        )
+
+        rules, _ = convert.finalize_rules(registry)
+
+        assert rules[0]["comment"] == comment
 
     def test_unresolved_reference_note_carries_source_label(self):
         registry = self.make_registry()
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
                             "hri", 138, "", "", "WHO human NAI",
-                            ["reference 5 unresolved (WHO human NAI)"])
+                            ["reference 5 unresolved"], subtype="H5N1")
         rules, _ = convert.finalize_rules(registry)
-        assert rules[0]["comment"] == "reference 5 unresolved (WHO human NAI)"
+        assert rules[0]["comment"] == "reference 5 unresolved"
 
     def test_different_antivirals_stay_separate(self):
         registry = self.make_registry()
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "oseltamivir",
-                            "hri", 138, "", "doi:10.1/a", "WHO human NAI", [])
+                            "hri", 138, "", "doi:10.1/a", "WHO human NAI", [],
+                            subtype="")
         registry.add_atomic("NA", "EF619973", 255, "H", "Y", "zanamivir",
-                            "ni", 3, "", "doi:10.1/a", "WHO human NAI", [])
+                            "ni", 3, "", "doi:10.1/a", "WHO human NAI", [],
+                            subtype="")
         rules, _ = convert.finalize_rules(registry)
         assert len(rules) == 2
         assert {r["antiviral"] for r in rules} == {"oseltamivir", "zanamivir"}
@@ -425,11 +493,12 @@ class TestFinalizeRulesFormulas:
              "mutation": "L"},
         ]
         registry.add_atomic("NA", "NC_007368", 119, "E", "D", "oseltamivir",
-                            "ni", 1, "", "doi:10.1/a", "WHO human NAI", [])
+                            "ni", 1, "", "doi:10.1/a", "WHO human NAI", [],
+                            subtype="")
         registry.add_combo("NA", "NC_007368",
                            tuple(c["member_key"] for c in components),
                            "oseltamivir", "hri", 799, "", "doi:10.1/b",
-                           "WHO human NAI", [], components)
+                           "WHO human NAI", [], components, subtype="")
         return registry, components
 
     def test_combo_emits_formula_and_reuses_singleton_member(self):
@@ -470,9 +539,50 @@ class TestFinalizeRulesFormulas:
         registry.add_combo("NA", "X",
                            tuple(c["member_key"] for c in components),
                            "oseltamivir", "hri", 799, "", "doi:10.1/b",
-                           "WHO human NAI", [], components)
+                           "WHO human NAI", [], components, subtype="")
         _, formulas = convert.finalize_rules(registry)
         assert formulas[0]["expression"] == "((M00001 OR M00002) AND M00003)"
+
+    def test_formula_groups_from_different_subtypes_merge_with_provenance(self):
+        registry = convert.RuleRegistry()
+        for subtype in ("A(H1N1)", "A(H1N1)pdm09"):
+            components = [
+                {
+                    "member_key": ("NA", "NC_026434", "E119D"),
+                    "canonical": ("NA", "NC_026434", 119, "E", "D"),
+                    "or_group": None, "position": 119, "reference": "E",
+                    "mutation": "D",
+                },
+                {
+                    "member_key": ("NA", "NC_026434", "I222L"),
+                    "canonical": ("NA", "NC_026434", 222, "I", "L"),
+                    "or_group": None, "position": 222, "reference": "I",
+                    "mutation": "L",
+                },
+            ]
+            registry.add_combo(
+                "NA", "NC_026434",
+                tuple(component["member_key"] for component in components),
+                "oseltamivir", "hri", 799, "", "doi:10.1/a",
+                "WHO human NAI",
+                [
+                    "Origin of virus: surveillance studies"
+                    if subtype == "A(H1N1)"
+                    else "Origin of virus: clinical detection"
+                ],
+                components,
+                subtype=subtype,
+            )
+
+        rules, formulas = convert.finalize_rules(registry)
+
+        assert len(formulas) == 1
+        assert len(rules) == 2
+        assert formulas[0]["source"] == "WHO human NAI"
+        assert formulas[0]["comment"] == (
+            "Origin of virus (A(H1N1)): surveillance studies | "
+            "Origin of virus (A(H1N1)pdm09): clinical detection"
+        )
 
 
 class TestCitationListParsing:

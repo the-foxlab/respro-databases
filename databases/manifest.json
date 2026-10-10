@@ -96,7 +96,7 @@
         "description": "WHO influenza antiviral susceptibility marker tables: neuraminidase inhibitor resistance markers for human and avian influenza viruses and polymerase acidic (PA) baloxavir markers, curated from the WHO marker tables.",
         "maintainer_update": "2026-07-17",
         "license": "CC-BY-NC-SA-3.0-IGO",
-        "tsv_checksum": "sha256:19f0a6149ed1bfb13c130eb381747bf0f03694b3f7e19a38f164d3cfe60b01f5"
+        "tsv_checksum": "sha256:a509151960679684df70fc16417a016a191911fa0508809ea88f033917f2320b"
       }
     }
   ]
