@@ -23,7 +23,7 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 
-SOURCE_URL = "https://gitlab.com/vtilloy/charmd-data-db/-/raw/master/charmd-data.tsv"
+SOURCE_URL = "https://gitlab.com/vtilloy/charmd-data-db/-/raw/master/charmd-data.csv"
 REFERENCE_IDENTIFIER = "X17403.1"
 EXPECTED_TAXON_ID = "10359"
 SOURCE_LABEL = "CHARMD"
@@ -193,7 +193,7 @@ def download_source(source_url: str) -> str:
     try:
         return payload.decode("utf-8-sig")
     except UnicodeDecodeError as exc:
-        raise ValueError("Source TSV is not valid UTF-8/UTF-8-SIG") from exc
+        raise ValueError("Source CSV is not valid UTF-8/UTF-8-SIG") from exc
 
 
 def validate_input_header(reader: csv.DictReader) -> None:
@@ -700,7 +700,7 @@ def build_metadata(source_date: str, rules_content: str) -> dict[str, object]:
 
 
 def parse_source_rows(text: str) -> list[dict[str, str]]:
-    reader = csv.DictReader(io.StringIO(text), delimiter="\t")
+    reader = csv.DictReader(io.StringIO(text), delimiter=",")
     validate_input_header(reader)
     rows: list[dict[str, str]] = []
     for source_line, row in enumerate(reader, start=2):
