@@ -7,9 +7,9 @@
   "publication_pmid": "39349222",
   "website": "https://gitlab.com/vtilloy/charmd-data-db",
   "description": "Comprehensive Herpesviruses Antiviral drug Resistance Mutation Database (CHARMD): https://www.unilim.fr/cnr-herpesvirus/outils/codexmv/.",
-  "maintainer_update": "2026-09-21",
+  "maintainer_update": "2026-11-03",
   "license": "CC-BY-NC-4.0",
-  "tsv_checksum": "sha256:c1ef3789e9903226933a6ededa0d0dbe86fb313c58cb69434bcb4698b0d653ca",
+  "tsv_checksum": "sha256:0a7e2ef16f7cf8f9d57dddb3f8ef300bb6c3c3f8a941981da06bd599dd09b857",
   "interpretation_algorithms": [
     {
       "name": "drug_groups",
