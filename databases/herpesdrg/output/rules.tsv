@@ -1,6 +1,32 @@
 feature	reference_identifier	position	reference	mutation	antiviral	member_id	phenotype	fold_ic50	publication	source	comment
 pol	AC_000008.1	501	A	E	cidofovir			4.6	doi:doi.org/10.1016/S0166-3542(02)00098-0	HerpesDRG	Test method: PRA, Rule created at: 04/02/2021, originally  A359E
 pol	AC_000008.1	883	L	S	cidofovir		resistant		doi:doi.org/10.1016/S0166-3542(02)00098-0	HerpesDRG	Test method: PRA, Rule created at: 04/02/2021, L741S originally
+U38	NC_000898	292	F	S	cidofovir			6	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	292	F	S	foscarnet			6	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	292	F	S	ganciclovir			6	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	435	T	R	cidofovir			5.35	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.7, 9; mean displayed, Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025, Co-mutation context in source: U38:C525S
+U38	NC_000898	435	T	R	foscarnet			5.35	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.7, 9; mean displayed, Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025, Co-mutation context in source: U38:C525S
+U38	NC_000898	435	T	R	ganciclovir			5.35	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.7, 9; mean displayed, Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025, Co-mutation context in source: U38:C525S
+U38	NC_000898	507	H	Y	cidofovir			1.85	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.1, 2.6; mean displayed, Test method: PCR DNA hybridization assay,Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	507	H	Y	foscarnet			5.25	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 7.9, 2.6; mean displayed, Test method: PCR DNA hybridization assay,Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	507	H	Y	ganciclovir			1.75	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 0.9, 2.6; mean displayed, Test method: PCR DNA hybridization assay,Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	525	C	S	cidofovir			3.4	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	525	C	S	foscarnet			3.4	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	525	C	S	ganciclovir			3.4	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	798	R	I	cidofovir			213	doi:doi.org/10.1016/j.antiviral.2007.12.004	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
+U38	NC_000898	798	R	I	foscarnet			1.2	doi:doi.org/10.1016/j.antiviral.2007.12.004	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
+U38	NC_000898	798	R	I	ganciclovir			4	doi:doi.org/10.1016/j.antiviral.2007.12.004	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
+U38	NC_000898	961	A	V	cidofovir			0.7	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	961	A	V	foscarnet			0.7	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U38	NC_000898	961	A	V	ganciclovir			0.7	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
+U69	NC_000898	202	L	I	ganciclovir		sensitive	1	doi:doi.org/10.1016/j.jviromet.2009.06.016,doi:doi.org/10.1016/j.jcv.2008.09.002	HerpesDRG	Test method: qPCR,PCR DNA hybridization assay, Rule created at: 04/02/2021,11/08/2025
+U69	NC_000898	213	L	I	ganciclovir		sensitive	1	doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016,doi:doi.org/10.1016/j.jcv.2008.09.002	HerpesDRG	Test method: PRA,qPCR,PCR DNA hybridization assay, Rule created at: 04/02/2021,11/08/2025
+U69	NC_000898	318	M	V	ganciclovir		resistant		doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: PRA,qPCR, Rule created at: 04/02/2021
+U69	NC_000898	447	A	D	ganciclovir		resistant		doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
+U69	NC_000898	448	C	G	ganciclovir		resistant		doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: PRA,qPCR, Rule created at: 04/02/2021
+U69	NC_000898	450	L	S	ganciclovir		resistant		doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
+U69	NC_000898	462	A	D	ganciclovir		resistant		doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
+U69	NC_000898	463	C	Y	ganciclovir		resistant		doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: PRA,qPCR, Rule created at: 04/02/2021
 ORF28	NC_001348	3	I	L	aciclovir			0.9	doi:doi.org/10.1016/j.jviromet.2016.03.006	HerpesDRG	Test method: PRA, Rule created at: 12/01/2020
 ORF28	NC_001348	39	T	A	aciclovir			1	doi:doi.org/10.1016/j.jcv.2017.08.011	HerpesDRG	Test method: PRA, Rule created at: 12/01/2020
 ORF28	NC_001348	39	T	A	brivudine			1.2	doi:doi.org/10.1016/j.jcv.2017.08.011	HerpesDRG	Test method: PRA, Rule created at: 12/01/2020
@@ -183,32 +209,6 @@ ORF36	NC_001348	334	N	*	foscarnet			0.6	doi:doi.org/10.1128/AAC.05115-14	HerpesD
 ORF36	NC_001348	334	N	*	penciclovir			10	doi:doi.org/10.1128/AAC.05115-14	HerpesDRG	Test method: PRA, Rule created at: 01/12/2020
 ORF55	NC_001348	350	K	N	aciclovir			0.8	doi:doi.org/10.1002/jmv.70080	HerpesDRG	Test method: PRA, Rule created at: 18/08/2025
 ORF55	NC_001348	350	K	N	amenamevir			2500	doi:doi.org/10.1002/jmv.70080	HerpesDRG	Test method: PRA, Rule created at: 18/08/2025
-U38	NC_001664	292	F	S	cidofovir			6	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	292	F	S	foscarnet			6	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	292	F	S	ganciclovir			6	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	435	T	R	cidofovir			5.35	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.7, 9; mean displayed, Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025, Co-mutation context in source: U38:C525S
-U38	NC_001664	435	T	R	foscarnet			5.35	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.7, 9; mean displayed, Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025, Co-mutation context in source: U38:C525S
-U38	NC_001664	435	T	R	ganciclovir			5.35	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.7, 9; mean displayed, Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025, Co-mutation context in source: U38:C525S
-U38	NC_001664	507	H	Y	cidofovir			1.85	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 1.1, 2.6; mean displayed, Test method: PCR DNA hybridization assay,Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	507	H	Y	foscarnet			5.25	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 7.9, 2.6; mean displayed, Test method: PCR DNA hybridization assay,Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	507	H	Y	ganciclovir			1.75	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Fold IC50 values: 0.9, 2.6; mean displayed, Test method: PCR DNA hybridization assay,Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	525	C	S	cidofovir			3.4	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	525	C	S	foscarnet			3.4	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	525	C	S	ganciclovir			3.4	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	798	R	I	cidofovir			213	doi:doi.org/10.1016/j.antiviral.2007.12.004	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
-U38	NC_001664	798	R	I	foscarnet			1.2	doi:doi.org/10.1016/j.antiviral.2007.12.004	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
-U38	NC_001664	798	R	I	ganciclovir			4	doi:doi.org/10.1016/j.antiviral.2007.12.004	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
-U38	NC_001664	961	A	V	cidofovir			0.7	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	961	A	V	foscarnet			0.7	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U38	NC_001664	961	A	V	ganciclovir			0.7	doi:doi.org/10.1177/135965350701200608	HerpesDRG	Test method: Functional enzyme kinetic assay, Rule created at: 18/08/2025
-U69	NC_001664	201	L	I	ganciclovir		sensitive	1	doi:doi.org/10.1016/j.jviromet.2009.06.016,doi:doi.org/10.1016/j.jcv.2008.09.002	HerpesDRG	Test method: qPCR,PCR DNA hybridization assay, Rule created at: 04/02/2021,11/08/2025
-U69	NC_001664	212	L	I	ganciclovir		sensitive	1	doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016,doi:doi.org/10.1016/j.jcv.2008.09.002	HerpesDRG	Test method: PRA,qPCR,PCR DNA hybridization assay, Rule created at: 04/02/2021,11/08/2025
-U69	NC_001664	317	M	V	ganciclovir		resistant		doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: PRA,qPCR, Rule created at: 04/02/2021
-U69	NC_001664	446	A	D	ganciclovir		resistant		doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
-U69	NC_001664	447	C	G	ganciclovir		resistant		doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: PRA,qPCR, Rule created at: 04/02/2021
-U69	NC_001664	449	L	S	ganciclovir		resistant		doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
-U69	NC_001664	462	A	D	ganciclovir		resistant		doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: qPCR, Rule created at: 04/02/2021
-U69	NC_001664	462	C	Y	ganciclovir		resistant		doi:doi.org/10.1002/jmv.10510,doi:doi.org/10.1016/j.jviromet.2009.06.016	HerpesDRG	Test method: PRA,qPCR, Rule created at: 04/02/2021
 UL23	NC_001798	25	G	A	aciclovir			1.45	doi:doi.org/10.1016/j.antiviral.2018.02.004	HerpesDRG	Fold IC50 values: 1.1, 1.8; mean displayed, Test method: PRA,dye uptake assay, Rule created at: 04/02/2021
 UL23	NC_001798	25	G	A	penciclovir			1.35	doi:doi.org/10.1016/j.antiviral.2018.02.004	HerpesDRG	Fold IC50 values: 0.3, 2.4; mean displayed, Test method: PRA,dye uptake assay, Rule created at: 04/02/2021
 UL23	NC_001798	26	R	H	aciclovir		sensitive		doi:doi.org/10.1016/j.antiviral.2003.08.018	HerpesDRG	Test method: PRA, Rule created at: 01/11/2020
