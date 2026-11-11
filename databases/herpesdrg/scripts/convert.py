@@ -110,7 +110,7 @@ REFERENCE_BY_VIRUS = {
     "adeno": "AC_000008.1",
     "hsv1": "NC_001806",
     "hsv2": "NC_001798",
-    "hhv6b": "NC_001664",
+    "hhv6b": "NC_000898",
 }
 
 
