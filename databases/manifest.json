@@ -35,9 +35,9 @@
         "publication_pmid": "39192205",
         "website": "https://github.com/ojcharles/herpesdrg-db",
         "description": "Comprehensive resource for human herpesvirus antiviral drug resistance genotyping.",
-        "maintainer_update": "2026-07-05",
+        "maintainer_update": "2026-11-01",
         "license": "MIT",
-        "tsv_checksum": "sha256:59f3c0fb4cc9ff8e3f013294de7b59fe956b930fe68ea5a94811d17b23c85fe6"
+        "tsv_checksum": "sha256:e13870edc641963378e6477f7dba081a729b478de7236a9b513f813a0c47f267"
       }
     },
     {

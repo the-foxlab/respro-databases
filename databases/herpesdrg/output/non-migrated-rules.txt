@@ -2,7 +2,6 @@
 # Columns: reason	mutation_id	virus	feature	aa_change	co_feature	co_aa	status	note	details
 
 reason	mutation_id	virus	feature	aa_change	co_feature	co_aa	status	note	details
-numeric_only_mutation_not_supported	1625	HHV6b	U38	654			A		failed_part=654
 status_not_active	1394	Adeno	pol	C687S			O	this is not resistance data	
 status_not_active	1387	Adeno	pol	F882I	pol	V180I	O	co-occuring uncharacterised mutations - oringally F740I	
 status_not_active	1397	Adeno	pol	I664M			O	this is not resistance data	
@@ -24,6 +23,7 @@ status_not_active	1751	HCMV	UL54	A543V	UL54	M460I	O	co-occurs with M460I which c
 status_not_active	496	HCMV	UL54	A626V			O	Anecdotal	
 status_not_active	499	HCMV	UL54	A631G			O	Anecdotal	
 status_not_active	509	HCMV	UL54	A688V			O	Anecdotal	
+status_not_active	48	HCMV	UL54	A692S			O	S Chou flagged that there is a 2004 erratum which invalidates this entry and recommendation is to remove it.	
 status_not_active	511	HCMV	UL54	A693T			O	Anecdotal	
 status_not_active	521	HCMV	UL54	A885S			O	Anecdotal	
 status_not_active	522	HCMV	UL54	A885T			O	Anecdotal	
@@ -175,7 +175,8 @@ status_not_active	476	HCMV	UL97	S108N			O	Anecdotal
 status_not_active	475	HCMV	UL97	T95S			O	Anecdotal	
 status_not_active	450	HCMV	UL97	V244I			O	occurs with many other mutations unable to establish its solo phenotype	
 status_not_active	1626	HHV6b	U38	A961V			O	cannot infer	
-status_not_active	1627	HHV6b	U69	M317V			O	cannot infer	
+status_not_active	1625	HHV6b	U38	R798I			O	Duplicate	
+status_not_active	1627	HHV6b	U69	M318V			O	cannot infer	
 status_not_active	1568	HSV1	UL23	A136N			O	A is not the tk wt AA have emailed author	
 status_not_active	732	HSV1	UL23	A167V			O	frameshift in tested strain	
 status_not_active	733	HSV1	UL23	A168T			E	ref wrong	
@@ -351,9 +352,11 @@ unparseable_mutation	81	HCMV	UL54	del981-982			A		failed_part=del981-982
 unparseable_mutation	221	HCMV	UL54	del981-982			A		failed_part=del981-982
 unparseable_mutation	431	HCMV	UL54	del981-982			A		failed_part=del981-982
 unparseable_mutation	2050	HCMV	UL54	del981-982			A		failed_part=del981-982
+unparseable_mutation	2095	HCMV	UL54	del981-982			A		failed_part=del981-982
 unparseable_mutation	563	HCMV	UL56	del445-447	UL56	E485G	A		failed_part=del445-447
 unparseable_mutation	569	HCMV	UL56	del789-791			A		failed_part=del789-791
 unparseable_mutation	277	HCMV	UL97	del355			A		failed_part=del355
+unparseable_mutation	2112	HCMV	UL97	del381-382			A		failed_part=del381-382
 unparseable_mutation	107	HCMV	UL97	del590-593			A		failed_part=del590-593
 unparseable_mutation	174	HCMV	UL97	del595-603			A		failed_part=del595-603
 unparseable_mutation	181	HCMV	UL97	del600			A		failed_part=del600
